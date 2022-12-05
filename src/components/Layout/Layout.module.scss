@@ -1,0 +1,24 @@
+@import "../../scss/variables.scss";
+@import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+.header__headline-green {
+    color: $green-theme;
+}
+.header__headline {
+    font-family: "Nerko One", cursive;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid black;
+    h1 {
+        margin: 0;
+    }
+}
+.header__actions {
+    vertical-align: middle;
+    font-size: 1.2rem;
+    span {
+        margin-left: 1rem;
+    }
+}

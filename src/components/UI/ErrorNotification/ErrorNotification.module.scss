@@ -1,0 +1,7 @@
+@import "../../../scss/variables";
+.notification {
+    background-color: $canceled-theme;
+    border: 3px solid $dark-canceled-theme;
+    font-size: 1.2rem;
+    color: black;
+}

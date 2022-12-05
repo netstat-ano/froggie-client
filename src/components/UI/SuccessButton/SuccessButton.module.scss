@@ -1,0 +1,13 @@
+@import "../../../scss/variables.scss";
+.button {
+    background-color: $success-theme;
+    border: 1px solid black;
+    color: white;
+    font-size: 1.1rem;
+    margin: 0.5rem;
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+    &:hover {
+        cursor: pointer;
+    }
+}
