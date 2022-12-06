@@ -29,7 +29,7 @@ class User {
             const userData = await response.json();
             localStorage.setItem("token", userData.token);
             const expiredTime = new Date(Date.now() + 1 * (60 * 60 * 1000));
-
+            localStorage.setItem("type", userData.type);
             localStorage.setItem("expiresIn", String(expiredTime));
             localStorage.setItem("userId", String(userData.userId));
 
@@ -57,6 +57,12 @@ class User {
             );
             return response;
         }
+    }
+    static clearLocalstorage() {
+        localStorage.removeItem("expiresIn");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        localStorage.removeItem("type");
     }
 }
 export default User;

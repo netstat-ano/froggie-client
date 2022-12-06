@@ -8,11 +8,15 @@ import SuccessButton from "../UI/SuccessButton/SuccessButton";
 import { authenticationActions } from "../../store/authentication";
 import ErrorNotification from "../UI/ErrorNotification/ErrorNotification";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
+import clearNotification from "../../utils/clearNotification";
+import styles from "./LoginForm.module.scss";
+import { useNavigate } from "react-router-dom";
 interface FormValues {
     email: string;
     password: string;
 }
 const LoginForm: React.FC<{}> = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const validate = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
@@ -29,6 +33,7 @@ const LoginForm: React.FC<{}> = () => {
         ) {
             errors.email = "Invalid email address";
         }
+        return errors;
     };
     const [serverError, setServerError] = useState<string>("");
     const formik = useFormik({
@@ -50,16 +55,19 @@ const LoginForm: React.FC<{}> = () => {
                     dispatch(
                         authenticationActions.login(userSnapshot.userData)
                     );
+                    navigate("/");
                 } else {
                     setServerError(userSnapshot.message);
+                    clearNotification(setServerError, 2000);
                 }
             } catch (err) {
                 setServerError("Database issue.");
+                clearNotification(setServerError, 2000);
             }
         },
     });
     return (
-        <div className="center">
+        <div className={`center ${styles["login-form"]}`}>
             <Overlay>
                 <>
                     {serverError && (

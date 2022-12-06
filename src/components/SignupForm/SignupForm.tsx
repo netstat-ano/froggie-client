@@ -9,6 +9,8 @@ import User from "../../models/User";
 import clearNotification from "../../utils/clearNotification";
 import { authenticationActions } from "../../store/authentication";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
+import styles from "./SignupForm.module.scss";
+import { useNavigate } from "react-router-dom";
 interface FormValues {
     email: string;
     username: string;
@@ -17,6 +19,7 @@ interface FormValues {
 }
 const SignupForm: React.FC<{}> = () => {
     const [serverError, setServerError] = useState<string>("");
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const validate = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
@@ -77,6 +80,7 @@ const SignupForm: React.FC<{}> = () => {
                         dispatch(
                             authenticationActions.login(userSnapshot.userData)
                         );
+                        navigate("/");
                     } else {
                         setServerError(userSnapshot.message);
                     }
@@ -93,7 +97,7 @@ const SignupForm: React.FC<{}> = () => {
         },
     });
     return (
-        <div className="center">
+        <div className={`center ${styles["signup-form"]}`}>
             <Overlay>
                 <>
                     {serverError && (

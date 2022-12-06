@@ -8,7 +8,13 @@ const authentication = createSlice({
         login(state, action) {
             state.token = action.payload.token;
             state.userId = action.payload.userId;
-            state.type = action.payload.userType;
+            state.type = action.payload.type;
+            return state;
+        },
+        logout(state) {
+            state.token = "";
+            state.userId = "";
+            state.type = "";
             return state;
         },
     },
