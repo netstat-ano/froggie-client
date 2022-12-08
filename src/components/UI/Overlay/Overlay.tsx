@@ -1,7 +1,8 @@
 import styles from "./Overlay.module.scss";
-const Overlay: React.FC<{ children: JSX.Element; className?: string }> = (
-    props
-) => {
+const Overlay: React.FC<{
+    children: JSX.Element | string;
+    className?: string;
+}> = (props) => {
     return (
         <div
             className={`${styles.overlay} ${

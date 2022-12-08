@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
-import SignupForm from "../SignupForm/SignupForm";
-import LoginForm from "../LoginForm/LoginForm";
+import SignupForm from "./SignupForm/SignupForm";
+import LoginForm from "./LoginForm/LoginForm";
 const Auth: React.FC<{}> = () => {
     const params = useParams();
     if (params.mode === "login") {

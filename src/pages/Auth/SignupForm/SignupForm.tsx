@@ -1,14 +1,14 @@
 import { useFormik, FormikErrors } from "formik";
-import Input from "../UI/Input/Input";
-import SuccessButton from "../UI/SuccessButton/SuccessButton";
-import Overlay from "../UI/Overlay/Overlay";
-import InputErrorMessage from "../UI/InputErrorMessage/InputErrorMessage";
+import Input from "../../../components/UI/Input/Input";
+import SuccessButton from "../../../components/UI/SuccessButton/SuccessButton";
+import Overlay from "../../../components/UI/Overlay/Overlay";
+import InputErrorMessage from "../../../components/UI/InputErrorMessage/InputErrorMessage";
 import { useState } from "react";
-import ErrorNotification from "../UI/ErrorNotification/ErrorNotification";
-import User from "../../models/User";
-import clearNotification from "../../utils/clearNotification";
-import { authenticationActions } from "../../store/authentication";
-import { useAppDispatch } from "../../hooks/use-app-dispatch";
+import ErrorNotification from "../../../components/UI/ErrorNotification/ErrorNotification";
+import User from "../../../models/User";
+import clearNotification from "../../../utils/clearNotification";
+import { authenticationActions } from "../../../store/authentication";
+import { useAppDispatch } from "../../../hooks/use-app-dispatch";
 import styles from "./SignupForm.module.scss";
 import { useNavigate } from "react-router-dom";
 interface FormValues {
