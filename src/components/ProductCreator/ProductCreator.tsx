@@ -1,14 +1,17 @@
 import Overlay from "../UI/Overlay/Overlay";
 import styles from "./ProductCreator.module.scss";
 import Input from "../UI/Input/Input";
-import { useFormik, FormikErrors, Form, Formik } from "formik";
+import { FormikErrors, Form, Formik } from "formik";
 import InputErrorMessage from "../UI/InputErrorMessage/InputErrorMessage";
 import SuccessButton from "../UI/SuccessButton/SuccessButton";
 import Textarea from "../UI/Textarea/Textarea";
-import FileInput from "../UI/FileInput/FileInput";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Product from "../../models/Product";
 import { useAppSelector } from "../../hooks/use-app-selector";
+import ImagePicker from "../UI/ImagePicker/ImagePicker";
+import Category from "../../models/Category";
+import CategoryCreator from "../CategoryCreator/CategoryCreator";
+import Select from "../UI/Select/Select";
 interface FormValues {
     productName: string;
     description: string;
@@ -16,10 +19,19 @@ interface FormValues {
 }
 const ProductCreator: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
-    const [images, setImages] = useState<FileList>();
+    const [categories, setCategories] = useState<Category[]>();
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const categories = await Category.getCategories();
+
+            if (categories instanceof Array) {
+                setCategories(categories);
+            }
+        };
+        fetchCategories();
+    }, []);
     const validate = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
-
         if (!values.productName) {
             errors.productName = "Required";
         }
@@ -30,13 +42,16 @@ const ProductCreator: React.FC<{}> = () => {
         if (!values.images) {
             errors.images = "Required";
         }
+        if (values.images.length > 8) {
+            errors.images = "You must choose less photos (max 8).";
+        }
         return errors;
     };
     const onSubmitHandler = (values: FormValues) => {
         const product = new Product(
             values.productName,
             values.description,
-            images
+            values.images
         );
         product.save(token);
     };
@@ -73,7 +88,7 @@ const ProductCreator: React.FC<{}> = () => {
                                 )}
                         </div>
                         <div>
-                            <FileInput
+                            <ImagePicker
                                 input={{
                                     accept: "image/png, image/jpeg",
                                     id: "images",
@@ -86,14 +101,12 @@ const ProductCreator: React.FC<{}> = () => {
                                             "images",
                                             event.target.files
                                         );
-                                        if (event.target.files) {
-                                            setImages(event.target.files);
-                                        }
                                     },
                                 }}
+                                filesAmount={formProps.values.images.length}
                                 invalid={Boolean(
-                                    formProps.touched.images &&
-                                        formProps.errors.images
+                                    formProps.errors.images ||
+                                        !formProps.values.images
                                 )}
                             />
                             {formProps.touched.images &&
@@ -126,6 +139,20 @@ const ProductCreator: React.FC<{}> = () => {
                                     />
                                 )}
                         </div>
+                        <div>
+                            <Select
+                                className={styles["product-creator__select"]}
+                            >
+                                <option>TEST lorem ispum</option>
+                            </Select>
+                            <br />
+
+                            <CategoryCreator
+                                setCategories={setCategories}
+                                categories={categories}
+                            />
+                        </div>
+
                         <SuccessButton button={{ type: "submit" }}>
                             Add product
                         </SuccessButton>

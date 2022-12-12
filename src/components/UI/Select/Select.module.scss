@@ -1,0 +1,11 @@
+@import "../../../scss/variables";
+.select {
+    background-color: DodgerBlue;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    outline: none;
+    border: 2px solid $blue-theme;
+    option {
+        background-color: DodgerBlue;
+    }
+}

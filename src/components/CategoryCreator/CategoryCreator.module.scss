@@ -1,0 +1,11 @@
+@import "../../scss/variables.scss";
+.category-creator__btn {
+    font-size: 1.2rem;
+    margin: 0.5rem;
+}
+.category-creator {
+    border: 2px solid $green-theme;
+    border-radius: 1rem;
+    background-color: $success-theme;
+    margin-bottom: 0.5rem;
+}

@@ -1,0 +1,8 @@
+@import "../../scss/variables";
+.category-list-item__delete {
+    color: $dark-canceled-theme;
+    &:hover {
+        color: $canceled-theme;
+        cursor: pointer;
+    }
+}

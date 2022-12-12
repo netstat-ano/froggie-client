@@ -1,3 +1,4 @@
+import Error from "./Error";
 class User {
     email: string;
     username?: string;
