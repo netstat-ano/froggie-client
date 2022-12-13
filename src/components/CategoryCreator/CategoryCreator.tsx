@@ -14,10 +14,24 @@ const CategoryCreator: React.FC<{
     const [addCategoryValue, setAddCategoryValue] = useState("");
     const [addCategoryError, setAddCategoryError] = useState("");
     const token = useAppSelector((state) => state.authentication.token);
-    const onAddCategoryHandler = () => {
+    const onAddCategoryHandler = async () => {
         if (addCategoryValue) {
             const category = new Category(addCategoryValue);
-            category.save(token);
+
+            const savedCategory = await category.save(token);
+            console.log(savedCategory);
+
+            setAddCategoryValue("");
+
+            if (savedCategory instanceof Category) {
+                props.setCategories((prevState) => [
+                    ...prevState!,
+                    savedCategory,
+                ]);
+            } else {
+                console.log("Error with database");
+            }
+
             return;
         }
     };

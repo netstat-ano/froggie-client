@@ -19,6 +19,19 @@ class Category {
                 },
             }
         );
+        console.log(response);
+
+        if (response.ok) {
+            const resJson = await response.json();
+            const returnedCategory = new Category(
+                resJson.category.name,
+                resJson.category.id
+            );
+
+            return returnedCategory as Category;
+        }
+        const resJson = response.json();
+        return resJson;
     }
     static async getCategories() {
         const response = await fetch(

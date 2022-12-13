@@ -20,6 +20,7 @@ interface FormValues {
 const ProductCreator: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
     const [categories, setCategories] = useState<Category[]>();
+    const [selectedCategory, setSelectedCategory] = useState<Category>();
     useEffect(() => {
         const fetchCategories = async () => {
             const categories = await Category.getCategories();
@@ -54,6 +55,13 @@ const ProductCreator: React.FC<{}> = () => {
             values.images
         );
         product.save(token);
+    };
+    const onChangeCategoryHandler = (
+        e: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const target = JSON.parse(e.target.value);
+        const category = new Category(target.name, target.id);
+        setSelectedCategory(category);
     };
     return (
         <Overlay className={styles["product-creator"]}>
@@ -140,11 +148,27 @@ const ProductCreator: React.FC<{}> = () => {
                                 )}
                         </div>
                         <div>
-                            <Select
-                                className={styles["product-creator__select"]}
-                            >
-                                <option>TEST lorem ispum</option>
-                            </Select>
+                            {categories && (
+                                <Select
+                                    select={{
+                                        onChange: onChangeCategoryHandler,
+                                    }}
+                                    className={
+                                        styles["product-creator__select"]
+                                    }
+                                >
+                                    <>
+                                        {categories.map((category) => (
+                                            <option
+                                                value={JSON.stringify(category)}
+                                                key={category.id}
+                                            >
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </>
+                                </Select>
+                            )}
                             <br />
 
                             <CategoryCreator

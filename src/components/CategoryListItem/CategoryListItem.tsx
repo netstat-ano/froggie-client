@@ -8,18 +8,17 @@ const CategoryListItem: React.FC<{
     setCategories: React.Dispatch<React.SetStateAction<Category[] | undefined>>;
 }> = (props) => {
     const token = useAppSelector((state) => state.authentication.token);
-    const onDeleteCategoryHandler = () => {
+    const onDeleteCategoryHandler = async () => {
         const currentCategory = new Category(
             props.category.name,
             props.category.id
         );
-
-        currentCategory.delete(token);
         props.setCategories((prevState) => {
             return prevState!.filter(
                 (category) => category.id !== props.category.id
             );
         });
+        await currentCategory.delete(token);
     };
     return (
         <li>

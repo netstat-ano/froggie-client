@@ -10,6 +10,7 @@ const CategoriesList: React.FC<{
             <ul className={styles["categories-list"]}>
                 {props.categories.map((category) => (
                     <CategoryListItem
+                        key={category.id}
                         setCategories={props.setCategories}
                         category={category}
                     />
