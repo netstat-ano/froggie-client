@@ -19,7 +19,6 @@ class Category {
                 },
             }
         );
-        console.log(response);
 
         if (response.ok) {
             const resJson = await response.json();
@@ -44,6 +43,7 @@ class Category {
             }
         );
         const resJson = await response.json();
+
         if (response.ok) {
             return resJson.categories as Category[];
         }

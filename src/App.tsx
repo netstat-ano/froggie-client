@@ -3,10 +3,14 @@ import { Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth/Auth";
 import styles from "./App.module.scss";
 import Main from "./components/UI/Main/Main";
+import Modal from "./components/UI/Modal/Modal";
+import ProductCreator from "./pages/ProductCreator/ProductCreator";
 import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/use-app-dispatch";
 import { authenticationActions } from "./store/authentication";
 import User from "./models/User";
+import Categories from "./pages/Categories/Categories";
+import Products from "./pages/Products/Products";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -51,10 +55,28 @@ function App() {
                         }
                     />
                     <Route
+                        path="/admin/create-product"
+                        element={
+                            <Main>
+                                <Modal>
+                                    <ProductCreator />
+                                </Modal>
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/:categoryId"
+                        element={
+                            <Main>
+                                <Products />
+                            </Main>
+                        }
+                    />
+                    <Route
                         path="/"
                         element={
                             <Main>
-                                <></>
+                                <Categories />
                             </Main>
                         }
                     />

@@ -1,21 +1,23 @@
-import Overlay from "../UI/Overlay/Overlay";
+import Overlay from "../../components/UI/Overlay/Overlay";
 import styles from "./ProductCreator.module.scss";
-import Input from "../UI/Input/Input";
-import { FormikErrors, Form, Formik } from "formik";
-import InputErrorMessage from "../UI/InputErrorMessage/InputErrorMessage";
-import SuccessButton from "../UI/SuccessButton/SuccessButton";
-import Textarea from "../UI/Textarea/Textarea";
+import Input from "../../components/UI/Input/Input";
+import { FormikErrors, Form, Formik, FormikHelpers } from "formik";
+import InputErrorMessage from "../../components/UI/InputErrorMessage/InputErrorMessage";
+import SuccessButton from "../../components/UI/SuccessButton/SuccessButton";
+import Textarea from "../../components/UI/Textarea/Textarea";
 import React, { useEffect, useState } from "react";
 import Product from "../../models/Product";
 import { useAppSelector } from "../../hooks/use-app-selector";
-import ImagePicker from "../UI/ImagePicker/ImagePicker";
+import ImagePicker from "../../components/UI/ImagePicker/ImagePicker";
 import Category from "../../models/Category";
-import CategoryCreator from "../CategoryCreator/CategoryCreator";
-import Select from "../UI/Select/Select";
+import CategoryCreator from "../../components/CategoryCreator/CategoryCreator";
+import Select from "../../components/UI/Select/Select";
+import ImagePreview from "../../components/ImagePreview/ImagePreview";
 interface FormValues {
     productName: string;
     description: string;
     images: string;
+    price: number;
 }
 const ProductCreator: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
@@ -27,10 +29,16 @@ const ProductCreator: React.FC<{}> = () => {
 
             if (categories instanceof Array) {
                 setCategories(categories);
+                setSelectedCategory(categories[0]);
             }
         };
         fetchCategories();
     }, []);
+    useEffect(() => {
+        if (categories instanceof Array) {
+            setSelectedCategory(categories[0]);
+        }
+    }, [categories]);
     const validate = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
         if (!values.productName) {
@@ -46,14 +54,23 @@ const ProductCreator: React.FC<{}> = () => {
         if (values.images.length > 8) {
             errors.images = "You must choose less photos (max 8).";
         }
+        if (values.price < 0) {
+            errors.price = "Price must be greater than 0";
+        }
         return errors;
     };
-    const onSubmitHandler = (values: FormValues) => {
+    const onSubmitHandler = (
+        values: FormValues,
+        actions: FormikHelpers<FormValues>
+    ) => {
         const product = new Product(
             values.productName,
             values.description,
-            values.images
+            values.price,
+            values.images,
+            selectedCategory!.id!
         );
+        actions.resetForm();
         product.save(token);
     };
     const onChangeCategoryHandler = (
@@ -66,7 +83,12 @@ const ProductCreator: React.FC<{}> = () => {
     return (
         <Overlay className={styles["product-creator"]}>
             <Formik
-                initialValues={{ productName: "", description: "", images: "" }}
+                initialValues={{
+                    productName: "",
+                    description: "",
+                    images: "",
+                    price: 0,
+                }}
                 validate={validate}
                 onSubmit={onSubmitHandler}
             >
@@ -123,6 +145,13 @@ const ProductCreator: React.FC<{}> = () => {
                                         message={formProps.errors.images}
                                     />
                                 )}
+                            <div>
+                                {formProps.values.images &&
+                                    formProps.values.images.length < 9 &&
+                                    Array.from(formProps.values.images).map(
+                                        (file) => <ImagePreview file={file} />
+                                    )}
+                            </div>
                         </div>
                         <div>
                             <Textarea
@@ -146,6 +175,21 @@ const ProductCreator: React.FC<{}> = () => {
                                         message={formProps.errors.description}
                                     />
                                 )}
+                        </div>
+                        <div>
+                            <Input
+                                input={{
+                                    value: formProps.values.price,
+                                    onChange: formProps.handleChange,
+                                    onBlur: formProps.handleBlur,
+                                    type: "number",
+                                    name: "price",
+                                }}
+                                invalid={Boolean(
+                                    formProps.touched.price &&
+                                        formProps.errors.price
+                                )}
+                            />
                         </div>
                         <div>
                             {categories && (

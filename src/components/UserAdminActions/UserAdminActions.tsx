@@ -1,24 +1,11 @@
 import SuccessButton from "../UI/SuccessButton/SuccessButton";
-import { useState } from "react";
-import Modal from "../UI/Modal/Modal";
-import styles from "./UserAdminActions.module.scss";
-import ProductCreator from "../ProductCreator/ProductCreator";
+import { Link } from "react-router-dom";
 const UserAdminActions: React.FC<{}> = () => {
-    const [isModalShowed, setIsModalShowed] = useState(false);
-    const onActivateModelHandler = () => {
-        setIsModalShowed((prevState) => !prevState);
-    };
-
     return (
         <>
-            {isModalShowed && (
-                <Modal>
-                    <ProductCreator />
-                </Modal>
-            )}
-            <SuccessButton button={{ onClick: onActivateModelHandler }}>
-                Create a product
-            </SuccessButton>
+            <Link to="/admin/create-product">
+                <SuccessButton>Create a product</SuccessButton>
+            </Link>
         </>
     );
 };
