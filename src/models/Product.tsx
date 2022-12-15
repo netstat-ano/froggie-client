@@ -1,18 +1,21 @@
+import Error from "./Error";
+
 class Product {
-    productName: string;
+    id?: number;
+    name: string;
     description: string;
     price: number;
     imagesURL: any;
     categoryId: number;
 
     constructor(
-        productName: string,
+        name: string,
         description: string,
         price: number,
         imagesURL: any,
         categoryId: number
     ) {
-        this.productName = productName;
+        this.name = name;
         this.description = description;
         this.imagesURL = imagesURL;
         this.categoryId = categoryId;
@@ -20,7 +23,7 @@ class Product {
     }
     async save(token: string) {
         const data = new FormData();
-        data.append("productName", this.productName);
+        data.append("productName", this.name);
         data.append("description", this.description);
         data.append("price", String(this.price));
         data.append("categoryId", String(this.categoryId));
@@ -62,7 +65,34 @@ class Product {
                 body: JSON.stringify({ categoryId: id }),
             }
         );
-        const resJson = response.json();
+        if (response.ok) {
+            const resJson = (await response.json()) as Product[];
+            return resJson;
+        } else {
+            const resJson = await response.json();
+            const messageError = new Error(resJson.message);
+            return messageError;
+        }
+    }
+    static async getProductByPk(id: string) {
+        const response = await fetch(
+            "http://localhost:8080/product/fetch-product-by-pk",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: id }),
+            }
+        );
+        const resJson = await response.json();
+
+        if (resJson.ok) {
+            return resJson.product as Product;
+        } else {
+            const errorMessage = new Error(resJson.message);
+            return errorMessage as Error;
+        }
         return resJson;
     }
 }

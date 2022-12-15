@@ -1,0 +1,18 @@
+@import "../../scss/variables";
+.product-detail__name {
+    text-align: center;
+    margin: 0 0 1rem 0;
+}
+.product-detail__header-image {
+    text-align: center;
+}
+.product-detail {
+    font-size: 1.4rem;
+}
+.product-detail__description {
+    text-align: center;
+}
+.product-detail__price {
+    text-align: center;
+    color: $green-theme;
+}

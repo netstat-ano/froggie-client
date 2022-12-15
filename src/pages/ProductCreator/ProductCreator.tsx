@@ -120,7 +120,7 @@ const ProductCreator: React.FC<{}> = () => {
                         <div>
                             <ImagePicker
                                 input={{
-                                    accept: "image/png, image/jpeg",
+                                    accept: "image/png, image/jpeg, image/webp, image/jpg",
                                     id: "images",
                                     name: "images",
                                     multiple: "multiple",
@@ -149,7 +149,14 @@ const ProductCreator: React.FC<{}> = () => {
                                 {formProps.values.images &&
                                     formProps.values.images.length < 9 &&
                                     Array.from(formProps.values.images).map(
-                                        (file) => <ImagePreview file={file} />
+                                        (file, index) => (
+                                            <ImagePreview
+                                                key={index}
+                                                index={index}
+                                                styleFirst={true}
+                                                file={file}
+                                            />
+                                        )
                                     )}
                             </div>
                         </div>

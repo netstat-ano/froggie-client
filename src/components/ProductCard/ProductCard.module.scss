@@ -1,6 +1,21 @@
+@import "../../scss/variables";
 .product-card__img-preview {
     width: 100px;
 }
 .product-card {
     width: fit-content;
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    padding: 0.5rem !important;
+    &:hover {
+        cursor: pointer;
+        background-color: white;
+    }
+}
+.product-card__name {
+    text-align: center;
+}
+.product-card__price {
+    text-align: center;
+    font-weight: bold;
+    color: $green-theme;
 }

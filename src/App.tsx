@@ -11,6 +11,9 @@ import { authenticationActions } from "./store/authentication";
 import User from "./models/User";
 import Categories from "./pages/Categories/Categories";
 import Products from "./pages/Products/Products";
+import ProductDetail from "./components/ProductDetail/ProductDetail";
+import "./index.css";
+import Error404 from "./pages/Error404/Error404";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -73,10 +76,34 @@ function App() {
                         }
                     />
                     <Route
+                        path="/product/:productId"
+                        element={
+                            <Main>
+                                <ProductDetail />
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/404"
+                        element={
+                            <Main>
+                                <Error404 />
+                            </Main>
+                        }
+                    />
+                    <Route
                         path="/"
                         element={
                             <Main>
                                 <Categories />
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/*"
+                        element={
+                            <Main>
+                                <Error404 />
                             </Main>
                         }
                     />

@@ -19,7 +19,6 @@ const CategoryCreator: React.FC<{
             const category = new Category(addCategoryValue);
 
             const savedCategory = await category.save(token);
-            console.log(savedCategory);
 
             setAddCategoryValue("");
 
