@@ -14,12 +14,14 @@ import Products from "./pages/Products/Products";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import "./index.css";
 import Error404 from "./pages/Error404/Error404";
+import Cart from "./components/Cart/Cart";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
         dispatch(authenticationActions.logout());
         User.clearLocalstorage();
     };
+
     useEffect(() => {
         const loadedTime = localStorage.getItem("expiresIn");
         let expiresTime;
@@ -57,6 +59,7 @@ function App() {
                             </Main>
                         }
                     />
+
                     <Route
                         path="/admin/create-product"
                         element={
@@ -64,6 +67,14 @@ function App() {
                                 <Modal>
                                     <ProductCreator />
                                 </Modal>
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/cart"
+                        element={
+                            <Main>
+                                <Cart />
                             </Main>
                         }
                     />

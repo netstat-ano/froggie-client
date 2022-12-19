@@ -4,6 +4,10 @@ import { useAppDispatch } from "../../hooks/use-app-dispatch";
 import { authenticationActions } from "../../store/authentication";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import UserAdminActions from "../UserAdminActions/UserAdminActions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import styles from "./UserActions.module.scss";
+import { Link } from "react-router-dom";
 const UserActions: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
     const userType = useAppSelector((state) => state.authentication.type);
@@ -13,6 +17,11 @@ const UserActions: React.FC<{}> = () => {
     };
     return (
         <nav>
+            <NavButton className={styles["user-action__element"]}>
+                <Link className="link" to="/cart">
+                    <FontAwesomeIcon icon={faCartShopping} />
+                </Link>
+            </NavButton>
             {userType === "admin" && <UserAdminActions />}
             <NavButton button={{ onClick: onLogoutHandler }}>Log out</NavButton>
         </nav>

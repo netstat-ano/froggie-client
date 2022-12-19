@@ -33,7 +33,7 @@ const ProductDetail: React.FC<{}> = () => {
                     </h2>
                     <div className={styles["product-detail__header-image"]}>
                         <HeaderImage
-                            url={`http://localhost:8080/${product?.imagesURL[0]}`}
+                            url={`${process.env.REACT_APP_API_URL}/${product?.imagesURL[0]}`}
                         />
                     </div>
                     <div>

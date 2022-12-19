@@ -32,7 +32,7 @@ class Product {
         }
 
         const response = await fetch(
-            "http://localhost:8080/product/create-product",
+            `${process.env.REACT_APP_API_URL}/product/create-product`,
             {
                 method: "POST",
                 body: data,
@@ -46,7 +46,7 @@ class Product {
     }
     static async getProducts() {
         const response = await fetch(
-            "http://localhost:8080/product/fetch-products",
+            `${process.env.API_URL}/product/fetch-products`,
             {
                 method: "POST",
             }
@@ -56,7 +56,7 @@ class Product {
     }
     static async getProductByCategory(id: string) {
         const response = await fetch(
-            "http://localhost:8080/product/fetch-product-by-category",
+            `${process.env.REACT_APP_API_URL}/product/fetch-product-by-category`,
             {
                 method: "POST",
                 headers: {
@@ -76,7 +76,7 @@ class Product {
     }
     static async getProductByPk(id: string) {
         const response = await fetch(
-            "http://localhost:8080/product/fetch-product-by-pk",
+            `${process.env.REACT_APP_API_URL}/product/fetch-product-by-pk`,
             {
                 method: "POST",
                 headers: {

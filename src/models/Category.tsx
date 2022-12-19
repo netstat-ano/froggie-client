@@ -7,7 +7,7 @@ class Category {
     }
     async save(token: string) {
         const response = await fetch(
-            "http://localhost:8080/category/add-category",
+            `${process.env.REACT_APP_API_URL}/category/add-category`,
             {
                 method: "POST",
                 body: JSON.stringify({
@@ -34,7 +34,7 @@ class Category {
     }
     static async getCategories() {
         const response = await fetch(
-            "http://localhost:8080/category/fetch-categories",
+            `${process.env.REACT_APP_API_URL}/category/fetch-categories`,
             {
                 method: "POST",
                 headers: {
@@ -51,7 +51,7 @@ class Category {
     }
     async delete(token: string) {
         const response = await fetch(
-            "http://localhost:8080/category/delete-category",
+            `${process.env.REACT_APP_API_URL}/category/delete-category`,
             {
                 method: "DELETE",
                 headers: {

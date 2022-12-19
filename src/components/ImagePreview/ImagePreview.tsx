@@ -20,7 +20,9 @@ const ImagePreview: React.FC<{
     return (
         <img
             className={`${styles["image-preview"]} ${optionalStyle}`}
-            src={`${url ? url : `http://localhost:8080/${props.url}`}`}
+            src={`${
+                url ? url : `${process.env.REACT_APP_API_URL}/${props.url}`
+            }`}
         ></img>
     );
 };

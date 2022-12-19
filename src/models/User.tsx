@@ -16,16 +16,19 @@ class User {
         this.retypePassword = retypePassword;
     }
     async login() {
-        const response = await fetch("http://localhost:8080/auth/login-user", {
-            method: "POST",
-            body: JSON.stringify({
-                email: this.email,
-                password: this.password,
-            }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/auth/login-user`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    email: this.email,
+                    password: this.password,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
         if (response.ok) {
             const userData = await response.json();
             localStorage.setItem("token", userData.token);
@@ -42,7 +45,7 @@ class User {
     async create() {
         if (this.username && this.retypePassword) {
             const response = await fetch(
-                "http://localhost:8080/auth/create-user",
+                `${process.env.REACT_APP_API_URL}/auth/create-user`,
                 {
                     method: "POST",
                     body: JSON.stringify({
