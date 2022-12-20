@@ -14,7 +14,9 @@ import Products from "./pages/Products/Products";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import "./index.css";
 import Error404 from "./pages/Error404/Error404";
-import Cart from "./components/Cart/Cart";
+import Cart from "./pages/Cart/Cart";
+import CartItem from "./models/CartItem";
+import { cartActions } from "./store/cart";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -23,29 +25,37 @@ function App() {
     };
 
     useEffect(() => {
-        const loadedTime = localStorage.getItem("expiresIn");
-        let expiresTime;
-        if (loadedTime) {
-            expiresTime = new Date(loadedTime);
-        }
-        if (expiresTime) {
-            const currentDate = new Date();
-            console.log(expiresTime.getTime() - currentDate.getTime());
-
-            if (expiresTime.getTime() - currentDate.getTime() <= 0) {
-                logout();
-            } else {
-                const token = localStorage.getItem("token");
-                const userId = localStorage.getItem("userId");
-                const type = localStorage.getItem("type");
-                dispatch(authenticationActions.login({ token, userId, type }));
-                let remainingMiliseconds =
-                    expiresTime.getTime() - currentDate.getTime();
-                setTimeout(() => {
-                    logout();
-                }, remainingMiliseconds);
+        const fetchUser = async () => {
+            const loadedTime = localStorage.getItem("expiresIn");
+            let expiresTime;
+            if (loadedTime) {
+                expiresTime = new Date(loadedTime);
             }
-        }
+            if (expiresTime) {
+                const currentDate = new Date();
+
+                if (expiresTime.getTime() - currentDate.getTime() <= 0) {
+                    logout();
+                } else {
+                    const token = localStorage.getItem("token");
+                    const userId = localStorage.getItem("userId");
+                    const type = localStorage.getItem("type");
+                    dispatch(
+                        authenticationActions.login({ token, userId, type })
+                    );
+                    let remainingMiliseconds =
+                        expiresTime.getTime() - currentDate.getTime();
+                    const fetchedCart = await CartItem.fetchCart(token!);
+                    if (fetchedCart instanceof Array) {
+                        dispatch(cartActions.init(fetchedCart));
+                    }
+                    setTimeout(() => {
+                        logout();
+                    }, remainingMiliseconds);
+                }
+            }
+        };
+        fetchUser();
     }, []);
     return (
         <div className={styles.app}>

@@ -1,6 +1,5 @@
 class Cart {
     items: {};
-
     constructor(items: {}) {
         this.items = items;
     }

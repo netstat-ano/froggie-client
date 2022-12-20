@@ -1,25 +1,50 @@
 import { createSlice, ThunkAction } from "@reduxjs/toolkit";
-import { RootState } from "./index";
-import { AnyAction } from "redux";
 import CartItem from "../models/CartItem";
 const cart = createSlice({
     name: "cart",
-    initialState: [] as CartItem[],
+    initialState: { items: [] as CartItem[], totalPrice: 0 as number },
     reducers: {
         addToCart(state, action) {
-            const findedProduct = state.find(
+            const findedProduct = state.items.find(
                 (product) => product.id === action.payload.id
             );
             if (!findedProduct) {
-                state.push(action.payload);
+                state.items.push(action.payload);
+                state.totalPrice += action.payload.price;
             } else {
                 findedProduct.amount += 1;
-                state = [...state, findedProduct];
+                state.totalPrice += findedProduct.price;
+                const index = state.items.findIndex(
+                    (item) => item.id === findedProduct.id
+                );
+                state.items[index] = findedProduct;
             }
         },
-        removeFromCart(state, action) {
-            state.filter((item) => item.id !== action.payload);
-            return state;
+        reduce(state, action) {
+            const findedProduct = state.items.find(
+                (item) => item.id === action.payload.id
+            );
+            if (findedProduct) {
+                findedProduct.amount -= action.payload.quantity;
+                if (findedProduct.amount === 0) {
+                    state.items = state.items.filter(
+                        (item) => item.id !== action.payload.id
+                    );
+                } else {
+                    const index = state.items.findIndex(
+                        (item) => item.id === action.payload.id
+                    );
+                    state.items[index] = findedProduct;
+                }
+                state.totalPrice -=
+                    action.payload.quantity * findedProduct.price;
+            }
+        },
+        init(state, action) {
+            state.items = action.payload;
+            state.items.forEach((item) => {
+                state.totalPrice += item.amount * item.price;
+            });
         },
     },
 });

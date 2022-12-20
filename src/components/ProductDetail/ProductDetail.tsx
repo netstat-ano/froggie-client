@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { useAppSelector } from "../../hooks/use-app-selector";
 import Product from "../../models/Product";
 import HeaderImage from "../HeaderImage/HeaderImage";
 import ImagePreview from "../ImagePreview/ImagePreview";
-import Modal from "../UI/Modal/Modal";
+import { cartActions } from "../../store/cart";
 import Overlay from "../UI/Overlay/Overlay";
 import SuccessButton from "../UI/SuccessButton/SuccessButton";
+import { useAppDispatch } from "../../hooks/use-app-dispatch";
 import styles from "./ProductDetail.module.scss";
+import CartItem from "../../models/CartItem";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
+    const dispatch = useAppDispatch();
+    const token = useAppSelector((state) => state.authentication.token);
     const navigate = useNavigate();
     useEffect(() => {
         const fetchProduct = async () => {
@@ -22,8 +27,18 @@ const ProductDetail: React.FC<{}> = () => {
         };
         fetchProduct();
     }, []);
-    console.log(product?.imagesURL);
-
+    const onAddToCartHandler = async () => {
+        const cartItem = new CartItem(
+            product!.name,
+            product!.description,
+            product!.price,
+            product!.imagesURL,
+            product!.categoryId,
+            1
+        );
+        dispatch(cartActions.addToCart({ ...cartItem, id: product!.id! }));
+        await cartItem.addToCart(product!.id!, token);
+    };
     return (
         <div className={`center ${styles["product-detail"]}`}>
             <Overlay>
@@ -51,9 +66,15 @@ const ProductDetail: React.FC<{}> = () => {
                     <div className={styles["product-detail__price"]}>
                         $ {product?.price}
                     </div>
-                    <div>
-                        <SuccessButton>Add to cart</SuccessButton>
-                    </div>
+                    {token && (
+                        <div>
+                            <SuccessButton
+                                button={{ onClick: onAddToCartHandler }}
+                            >
+                                Add to cart
+                            </SuccessButton>
+                        </div>
+                    )}
                 </>
             </Overlay>
         </div>

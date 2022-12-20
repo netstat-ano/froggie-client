@@ -19,10 +19,10 @@ const ProductCard: React.FC<{ product: Product }> = (props) => {
             props.product.categoryId,
             1
         );
-        await cartItem.addToCart(props.product!.id!, token);
         dispatch(
             cartActions.addToCart({ ...cartItem, id: props.product!.id! })
         );
+        await cartItem.addToCart(props.product!.id!, token);
     };
     return (
         <Overlay className={styles["product-card"]}>
