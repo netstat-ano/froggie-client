@@ -17,13 +17,14 @@ import Error404 from "./pages/Error404/Error404";
 import Cart from "./pages/Cart/Cart";
 import CartItem from "./models/CartItem";
 import { cartActions } from "./store/cart";
+import { useAppSelector } from "./hooks/use-app-selector";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
         dispatch(authenticationActions.logout());
         User.clearLocalstorage();
     };
-
+    const cart = useAppSelector((state) => state.cart);
     useEffect(() => {
         const fetchUser = async () => {
             const loadedTime = localStorage.getItem("expiresIn");
@@ -45,9 +46,11 @@ function App() {
                     );
                     let remainingMiliseconds =
                         expiresTime.getTime() - currentDate.getTime();
-                    const fetchedCart = await CartItem.fetchCart(token!);
-                    if (fetchedCart instanceof Array) {
-                        dispatch(cartActions.init(fetchedCart));
+                    if (cart.items.length === 0) {
+                        const fetchedCart = await CartItem.fetchCart(token!);
+                        if (fetchedCart instanceof Array) {
+                            dispatch(cartActions.init(fetchedCart));
+                        }
                     }
                     setTimeout(() => {
                         logout();

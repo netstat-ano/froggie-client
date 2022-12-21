@@ -11,6 +11,9 @@ import { useAppDispatch } from "../../../hooks/use-app-dispatch";
 import clearNotification from "../../../utils/clearNotification";
 import styles from "./LoginForm.module.scss";
 import { useNavigate } from "react-router-dom";
+import CartItem from "../../../models/CartItem";
+import { cartActions } from "../../../store/cart";
+import { useAppSelector } from "../../../hooks/use-app-selector";
 interface FormValues {
     email: string;
     password: string;
@@ -18,6 +21,7 @@ interface FormValues {
 const LoginForm: React.FC<{}> = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const cart = useAppSelector((state) => state.cart);
     const validate = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
         if (!values.password) {
@@ -55,6 +59,14 @@ const LoginForm: React.FC<{}> = () => {
                     dispatch(
                         authenticationActions.login(userSnapshot.userData)
                     );
+                    if (cart.items.length === 0) {
+                        const fetchedCart = await CartItem.fetchCart(
+                            userSnapshot.userData.token
+                        );
+                        if (fetchedCart instanceof Array) {
+                            dispatch(cartActions.init(fetchedCart));
+                        }
+                    }
                     navigate("/");
                 } else {
                     setServerError(userSnapshot.message);

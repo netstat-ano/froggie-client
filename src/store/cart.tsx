@@ -41,10 +41,16 @@ const cart = createSlice({
             }
         },
         init(state, action) {
-            state.items = action.payload;
-            state.items.forEach((item) => {
-                state.totalPrice += item.amount * item.price;
-            });
+            if (state.items.length === 0) {
+                state.items = action.payload;
+                state.items.forEach((item) => {
+                    state.totalPrice += item.amount * item.price;
+                });
+            }
+        },
+        reset(state) {
+            state.items = [];
+            state.totalPrice = 0;
         },
     },
 });

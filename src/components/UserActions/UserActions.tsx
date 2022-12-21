@@ -8,11 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import styles from "./UserActions.module.scss";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const UserActions: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const userType = useAppSelector((state) => state.authentication.type);
     const onLogoutHandler = () => {
         User.clearLocalstorage();
+        navigate("/");
         dispatch(authenticationActions.logout());
     };
     return (

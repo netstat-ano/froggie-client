@@ -5,10 +5,30 @@ import styles from "./CartItemCard.module.scss";
 import { cartActions } from "../../store/cart";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import IncrementationButton from "../UI/IncrementationButton/IncrementationButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
     const { product } = props;
     const token = useAppSelector((state) => state.authentication.token);
     const dispatch = useAppDispatch();
+    const onDeleteFromCartHandler = async () => {
+        const cartItem = new CartItem(
+            props.product.name,
+            props.product.description,
+            props.product.price,
+            props.product.imagesURL,
+            props.product.categoryId,
+            1
+        );
+        dispatch(
+            cartActions.reduce({
+                ...cartItem,
+                id: product.id,
+                quantity: product.amount,
+            })
+        );
+        await cartItem.reduce(product.id!, token, product.amount);
+    };
     const onAddToCartHandler = async () => {
         const cartItem = new CartItem(
             props.product.name,
@@ -19,7 +39,7 @@ const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
             1
         );
         dispatch(cartActions.addToCart({ ...cartItem, id: product!.id! }));
-        await cartItem.addToCart(props.product!.id!, token);
+        await cartItem.addToCart(product!.id!, token);
     };
     const onRemoveFromCartHandler = async () => {
         const cartItem = new CartItem(
@@ -48,6 +68,13 @@ const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
                     onDecrementation={onRemoveFromCartHandler}
                     initialState={product.amount}
                 />
+                <div>
+                    <FontAwesomeIcon
+                        onClick={onDeleteFromCartHandler}
+                        className={styles["cart-item-card__delete-icon"]}
+                        icon={faXmark}
+                    />
+                </div>
             </>
         </div>
     );

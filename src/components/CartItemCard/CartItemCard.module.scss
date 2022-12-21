@@ -1,7 +1,14 @@
+@import "../../scss/variables";
 .cart-item-card {
     display: flex;
     align-items: center;
     > div {
         padding-right: 1rem;
+    }
+}
+.cart-item-card__delete-icon {
+    color: $canceled-theme;
+    &:hover {
+        cursor: pointer;
     }
 }

@@ -1,3 +1,15 @@
+@import "../../scss/variables";
 .cart {
     width: fit-content;
+}
+.cart__total {
+    text-align: center;
+    font-size: 1.2rem;
+}
+.cart__total__price {
+    color: $success-theme;
+}
+.cart__order-btn {
+    text-align: center;
+    margin-top: 0.5rem;
 }
