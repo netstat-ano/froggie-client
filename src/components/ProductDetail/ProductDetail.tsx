@@ -8,6 +8,11 @@ import { cartActions } from "../../store/cart";
 import Overlay from "../UI/Overlay/Overlay";
 import SuccessButton from "../UI/SuccessButton/SuccessButton";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faPenToSquare,
+    faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProductDetail.module.scss";
 import CartItem from "../../models/CartItem";
 const ProductDetail: React.FC<{}> = () => {
@@ -15,11 +20,12 @@ const ProductDetail: React.FC<{}> = () => {
     const [product, setProduct] = useState<Product>();
     const dispatch = useAppDispatch();
     const token = useAppSelector((state) => state.authentication.token);
+    const userType = useAppSelector((state) => state.authentication.type);
     const navigate = useNavigate();
     useEffect(() => {
         const fetchProduct = async () => {
             const product = await Product.getProductByPk(productId!);
-            if (product.id) {
+            if (product instanceof Object) {
                 setProduct(product);
             } else {
                 navigate("/404");
@@ -27,6 +33,15 @@ const ProductDetail: React.FC<{}> = () => {
         };
         fetchProduct();
     }, []);
+    const onEditHandler = () => {
+        navigate(
+            `/admin/create-product?edit=true&productName=${
+                product!.name
+            }&description=${product!.description}&price=${
+                product!.price
+            }&id=${product!.id!}`
+        );
+    };
     const onAddToCartHandler = async () => {
         const cartItem = new CartItem(
             product!.name,
@@ -66,12 +81,25 @@ const ProductDetail: React.FC<{}> = () => {
                     <div className={styles["product-detail__price"]}>
                         $ {product?.price}
                     </div>
-                    {token && (
+                    {userType === "admin" && (
                         <div>
+                            <SuccessButton button={{ onClick: onEditHandler }}>
+                                <>
+                                    <FontAwesomeIcon icon={faPenToSquare} />
+                                    Edit
+                                </>
+                            </SuccessButton>
+                        </div>
+                    )}
+                    {token && (
+                        <div className={styles["product-detail__add-to-cart"]}>
                             <SuccessButton
                                 button={{ onClick: onAddToCartHandler }}
                             >
-                                Add to cart
+                                <>
+                                    <FontAwesomeIcon icon={faShoppingCart} />
+                                    Add to cart
+                                </>
                             </SuccessButton>
                         </div>
                     )}

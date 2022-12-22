@@ -1,0 +1,14 @@
+.hover-menu {
+    background-color: white;
+    position: absolute;
+    border-radius: 0.5rem;
+}
+.hover-menu__list {
+    margin: 0.25rem;
+    padding: 0.25rem;
+    list-style-type: none;
+    li {
+        margin: 0;
+        padding: 0;
+    }
+}

@@ -13,6 +13,7 @@ import Category from "../../models/Category";
 import CategoryCreator from "../../components/CategoryCreator/CategoryCreator";
 import Select from "../../components/UI/Select/Select";
 import ImagePreview from "../../components/ImagePreview/ImagePreview";
+import { useSearchParams } from "react-router-dom";
 interface FormValues {
     productName: string;
     description: string;
@@ -23,6 +24,8 @@ const ProductCreator: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
     const [categories, setCategories] = useState<Category[]>();
     const [selectedCategory, setSelectedCategory] = useState<Category>();
+    const [searchParams] = useSearchParams();
+
     useEffect(() => {
         const fetchCategories = async () => {
             const categories = await Category.getCategories();
@@ -71,7 +74,11 @@ const ProductCreator: React.FC<{}> = () => {
             selectedCategory!.id!
         );
         actions.resetForm();
-        product.save(token);
+        if (Boolean(searchParams.get("edit")) === true) {
+            // product.update(token);
+        } else {
+            product.save(token);
+        }
     };
     const onChangeCategoryHandler = (
         e: React.ChangeEvent<HTMLSelectElement>
@@ -84,10 +91,10 @@ const ProductCreator: React.FC<{}> = () => {
         <Overlay className={styles["product-creator"]}>
             <Formik
                 initialValues={{
-                    productName: "",
-                    description: "",
+                    productName: searchParams.get("productName") || "",
+                    description: searchParams.get("description") || "",
                     images: "",
-                    price: 0,
+                    price: Number(searchParams.get("price")) || 0,
                 }}
                 validate={validate}
                 onSubmit={onSubmitHandler}
@@ -229,7 +236,11 @@ const ProductCreator: React.FC<{}> = () => {
                         </div>
 
                         <SuccessButton button={{ type: "submit" }}>
-                            Add product
+                            <>
+                                {Boolean(searchParams.get("edit")) === true
+                                    ? "Update product"
+                                    : "Add product"}
+                            </>
                         </SuccessButton>
                     </Form>
                 )}

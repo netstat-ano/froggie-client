@@ -7,8 +7,6 @@ const Categories: React.FC<{}> = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             const fetchedCategories = await Category.getCategories();
-            console.log(fetchedCategories);
-
             if (fetchedCategories instanceof Array) {
                 setCategories(fetchedCategories);
             }

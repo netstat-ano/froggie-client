@@ -90,10 +90,36 @@ class Product {
         if (resJson.ok) {
             return resJson.product as Product;
         } else {
+            return resJson.message as string;
+        }
+    }
+    async update(token: string, id: number) {
+        const data = new FormData();
+        data.append("productName", this.name);
+        data.append("description", this.description);
+        data.append("price", String(this.price));
+        data.append("categoryId", String(this.categoryId));
+        for (let i = 0; i < this.imagesURL.length; i++) {
+            data.append("images", this.imagesURL[i]);
+        }
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/product/update-product`,
+            {
+                method: "POST",
+                body: data,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const resJson = await response.json();
+
+        if (resJson.ok) {
+            return resJson;
+        } else {
             const errorMessage = new Error(resJson.message);
             return errorMessage as Error;
         }
-        return resJson;
     }
 }
 export default Product;

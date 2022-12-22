@@ -6,14 +6,17 @@ import SuccessButton from "../../components/UI/SuccessButton/SuccessButton";
 import { cartActions } from "../../store/cart";
 import CartModel from "../../models/Cart";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
+import Order from "../../models/Order";
 const Cart: React.FC<{}> = () => {
     const cart = useAppSelector((state) => state.cart);
     const token = useAppSelector((state) => state.authentication.token);
     const dispatch = useAppDispatch();
     const onOrderHandler = async () => {
-        const cart = new CartModel(token);
+        const order = new Order(cart.items);
+        order.save(token);
+        const cartModel = new CartModel(token);
         dispatch(cartActions.reset());
-        await cart.delete();
+        await cartModel.delete();
     };
     return (
         <div className="center">

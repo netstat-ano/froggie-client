@@ -9,17 +9,41 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import styles from "./UserActions.module.scss";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import UserMenu from "../UserMenu/UserMenu";
 const UserActions: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const userType = useAppSelector((state) => state.authentication.type);
+    const [isMenuUserShowed, setIsMenuUserShowed] = useState(false);
     const onLogoutHandler = () => {
         User.clearLocalstorage();
         navigate("/");
         dispatch(authenticationActions.logout());
     };
+    const onOverUserHandler = () => {
+        setIsMenuUserShowed(true);
+    };
+    const onOutUserHandler = () => {
+        setIsMenuUserShowed(false);
+    };
+
     return (
-        <nav>
+        <nav className={styles["user-actions"]}>
+            <NavButton
+                button={{
+                    onMouseOver: onOverUserHandler,
+                    onMouseOut: onOutUserHandler,
+                }}
+                disableBorder={true}
+                className={styles["user-action__element"]}
+            >
+                <FontAwesomeIcon icon={faUser} />
+            </NavButton>
+            {isMenuUserShowed && (
+                <UserMenu onOver={onOverUserHandler} onOut={onOutUserHandler} />
+            )}
             <NavButton className={styles["user-action__element"]}>
                 <Link className="link" to="/cart">
                     <FontAwesomeIcon icon={faCartShopping} />
