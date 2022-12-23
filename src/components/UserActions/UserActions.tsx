@@ -17,6 +17,7 @@ const UserActions: React.FC<{}> = () => {
     const navigate = useNavigate();
     const userType = useAppSelector((state) => state.authentication.type);
     const [isMenuUserShowed, setIsMenuUserShowed] = useState(false);
+    const cart = useAppSelector((state) => state.cart);
     const onLogoutHandler = () => {
         User.clearLocalstorage();
         navigate("/");
@@ -46,6 +47,15 @@ const UserActions: React.FC<{}> = () => {
             )}
             <NavButton className={styles["user-action__element"]}>
                 <Link className="link" to="/cart">
+                    {cart.items.length > 0 && (
+                        <div
+                            className={
+                                styles["user-action__element__total-products"]
+                            }
+                        >
+                            {cart.totalProducts}
+                        </div>
+                    )}
                     <FontAwesomeIcon icon={faCartShopping} />
                 </Link>
             </NavButton>

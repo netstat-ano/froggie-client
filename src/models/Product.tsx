@@ -95,10 +95,11 @@ class Product {
     }
     async update(token: string, id: number) {
         const data = new FormData();
+        data.append("ProductId", String(id));
         data.append("productName", this.name);
         data.append("description", this.description);
         data.append("price", String(this.price));
-        data.append("categoryId", String(this.categoryId));
+        data.append("CategoryId", String(this.categoryId));
         for (let i = 0; i < this.imagesURL.length; i++) {
             data.append("images", this.imagesURL[i]);
         }
@@ -108,7 +109,7 @@ class Product {
                 method: "POST",
                 body: data,
                 headers: {
-                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
             }
         );

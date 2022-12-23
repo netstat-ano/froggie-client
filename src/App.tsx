@@ -19,6 +19,7 @@ import CartItem from "./models/CartItem";
 import { cartActions } from "./store/cart";
 import { useAppSelector } from "./hooks/use-app-selector";
 import Orders from "./pages/Orders/Orders";
+import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -128,7 +129,9 @@ function App() {
                         path="/"
                         element={
                             <Main>
-                                <Categories />
+                                <>
+                                    <Categories />
+                                </>
                             </Main>
                         }
                     />

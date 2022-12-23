@@ -15,6 +15,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProductDetail.module.scss";
 import CartItem from "../../models/CartItem";
+import useLoading from "../../hooks/use-loading";
+import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
@@ -22,12 +24,15 @@ const ProductDetail: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
     const userType = useAppSelector((state) => state.authentication.type);
     const navigate = useNavigate();
+    const [isLoading, stopLoading] = useLoading();
     useEffect(() => {
         const fetchProduct = async () => {
             const product = await Product.getProductByPk(productId!);
             if (product instanceof Object) {
                 setProduct(product);
+                stopLoading();
             } else {
+                stopLoading();
                 navigate("/404");
             }
         };
@@ -56,55 +61,66 @@ const ProductDetail: React.FC<{}> = () => {
     };
     return (
         <div className={`center ${styles["product-detail"]}`}>
-            <Overlay>
-                <>
-                    <h2 className={styles["product-detail__name"]}>
-                        {product?.name}
-                    </h2>
-                    <div className={styles["product-detail__header-image"]}>
-                        <HeaderImage
-                            url={`${process.env.REACT_APP_API_URL}/${product?.imagesURL[0]}`}
-                        />
-                    </div>
-                    <div>
-                        {product?.imagesURL.map(
-                            (url: string, index: number) => {
-                                if (index !== 0) {
-                                    return <ImagePreview url={url} />;
-                                }
-                            }
-                        )}
-                    </div>
-                    <div className={styles["product-detail__description"]}>
-                        {product?.description}
-                    </div>
-                    <div className={styles["product-detail__price"]}>
-                        $ {product?.price}
-                    </div>
-                    {userType === "admin" && (
+            {isLoading && <LoadingSpinner />}
+            {!isLoading && (
+                <Overlay>
+                    <>
+                        <h2 className={styles["product-detail__name"]}>
+                            {product?.name}
+                        </h2>
+                        <div className={styles["product-detail__header-image"]}>
+                            <HeaderImage
+                                url={`${process.env.REACT_APP_API_URL}/${product?.imagesURL[0]}`}
+                            />
+                        </div>
                         <div>
-                            <SuccessButton button={{ onClick: onEditHandler }}>
-                                <>
-                                    <FontAwesomeIcon icon={faPenToSquare} />
-                                    Edit
-                                </>
-                            </SuccessButton>
+                            {product?.imagesURL.map(
+                                (url: string, index: number) => {
+                                    if (index !== 0) {
+                                        return <ImagePreview url={url} />;
+                                    }
+                                }
+                            )}
                         </div>
-                    )}
-                    {token && (
-                        <div className={styles["product-detail__add-to-cart"]}>
-                            <SuccessButton
-                                button={{ onClick: onAddToCartHandler }}
+                        <div className={styles["product-detail__description"]}>
+                            {product?.description}
+                        </div>
+                        <div className={styles["product-detail__price"]}>
+                            $ {product?.price}
+                        </div>
+                        {userType === "admin" && (
+                            <div>
+                                <SuccessButton
+                                    button={{ onClick: onEditHandler }}
+                                >
+                                    <>
+                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                        Edit
+                                    </>
+                                </SuccessButton>
+                            </div>
+                        )}
+                        {token && (
+                            <div
+                                className={
+                                    styles["product-detail__add-to-cart"]
+                                }
                             >
-                                <>
-                                    <FontAwesomeIcon icon={faShoppingCart} />
-                                    Add to cart
-                                </>
-                            </SuccessButton>
-                        </div>
-                    )}
-                </>
-            </Overlay>
+                                <SuccessButton
+                                    button={{ onClick: onAddToCartHandler }}
+                                >
+                                    <>
+                                        <FontAwesomeIcon
+                                            icon={faShoppingCart}
+                                        />
+                                        Add to cart
+                                    </>
+                                </SuccessButton>
+                            </div>
+                        )}
+                    </>
+                </Overlay>
+            )}
         </div>
     );
 };

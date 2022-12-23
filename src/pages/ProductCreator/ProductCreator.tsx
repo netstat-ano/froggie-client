@@ -13,7 +13,10 @@ import Category from "../../models/Category";
 import CategoryCreator from "../../components/CategoryCreator/CategoryCreator";
 import Select from "../../components/UI/Select/Select";
 import ImagePreview from "../../components/ImagePreview/ImagePreview";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import CartItem from "../../models/CartItem";
+import { useAppDispatch } from "../../hooks/use-app-dispatch";
+import cart, { cartActions } from "../../store/cart";
 interface FormValues {
     productName: string;
     description: string;
@@ -25,7 +28,8 @@ const ProductCreator: React.FC<{}> = () => {
     const [categories, setCategories] = useState<Category[]>();
     const [selectedCategory, setSelectedCategory] = useState<Category>();
     const [searchParams] = useSearchParams();
-
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchCategories = async () => {
             const categories = await Category.getCategories();
@@ -62,7 +66,7 @@ const ProductCreator: React.FC<{}> = () => {
         }
         return errors;
     };
-    const onSubmitHandler = (
+    const onSubmitHandler = async (
         values: FormValues,
         actions: FormikHelpers<FormValues>
     ) => {
@@ -73,9 +77,27 @@ const ProductCreator: React.FC<{}> = () => {
             values.images,
             selectedCategory!.id!
         );
-        actions.resetForm();
-        if (Boolean(searchParams.get("edit")) === true) {
-            // product.update(token);
+        actions.resetForm({
+            values: {
+                productName: "",
+                description: "",
+                images: "",
+                price: 0,
+            },
+        });
+
+        if (
+            Boolean(searchParams.get("edit")) === true &&
+            searchParams.get("id")
+        ) {
+            dispatch(cartActions.reset());
+            await product.update(token, Number(searchParams.get("id")));
+            const fetchedCart = await CartItem.fetchCart(token!);
+
+            if (fetchedCart instanceof Array) {
+                dispatch(cartActions.init(fetchedCart));
+            }
+            navigate(`/product/${searchParams.get("id")}`);
         } else {
             product.save(token);
         }

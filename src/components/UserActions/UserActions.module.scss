@@ -1,3 +1,11 @@
 .user-action__element {
     margin-right: 0.5rem;
 }
+.user-action__element__total-products {
+    position: absolute;
+    font-size: 0.6rem;
+    color: rgb(255, 255, 255);
+    z-index: 2;
+    top: 1px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
