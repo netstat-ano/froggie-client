@@ -1,4 +1,5 @@
 import Error from "./Error";
+import ResponseApi from "./ResponseApi";
 
 class Product {
     id?: number;
@@ -41,18 +42,8 @@ class Product {
                 },
             }
         );
-        const resJson = response.json();
-        return resJson;
-    }
-    static async getProducts() {
-        const response = await fetch(
-            `${process.env.API_URL}/product/fetch-products`,
-            {
-                method: "POST",
-            }
-        );
-        const resJson = response.json();
-        return resJson;
+        const resJson = await response.json();
+        return resJson as ResponseApi;
     }
     static async getProductByCategory(id: string) {
         const response = await fetch(
@@ -70,8 +61,7 @@ class Product {
             return resJson;
         } else {
             const resJson = await response.json();
-            const messageError = new Error(resJson.message);
-            return messageError;
+            return resJson as ResponseApi;
         }
     }
     static async getProductByPk(id: string) {
@@ -115,12 +105,7 @@ class Product {
         );
         const resJson = await response.json();
 
-        if (resJson.ok) {
-            return resJson;
-        } else {
-            const errorMessage = new Error(resJson.message);
-            return errorMessage as Error;
-        }
+        return resJson as ResponseApi;
     }
 }
 export default Product;

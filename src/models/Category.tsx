@@ -1,3 +1,5 @@
+import ResponseApi from "./ResponseApi";
+
 class Category {
     id?: number;
     name: string;
@@ -29,8 +31,8 @@ class Category {
 
             return returnedCategory as Category;
         }
-        const resJson = response.json();
-        return resJson;
+        const resJson = await response.json();
+        return resJson as ResponseApi;
     }
     static async getCategories() {
         const response = await fetch(
@@ -47,7 +49,7 @@ class Category {
         if (response.ok) {
             return resJson.categories as Category[];
         }
-        return resJson as Error;
+        return resJson as ResponseApi;
     }
     async delete(token: string) {
         const response = await fetch(
@@ -62,10 +64,7 @@ class Category {
             }
         );
         const resJson = await response.json();
-        if (response.ok) {
-            return {};
-        }
-        return resJson as Error;
+        return resJson as ResponseApi;
     }
 }
 export default Category;

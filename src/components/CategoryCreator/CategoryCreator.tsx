@@ -9,7 +9,7 @@ import styles from "./CategoryCreator.module.scss";
 import CategoriesList from "../CategoriesList/CategoriesList";
 const CategoryCreator: React.FC<{
     categories?: Category[];
-    setCategories: React.Dispatch<React.SetStateAction<Category[] | undefined>>;
+    setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 }> = (props) => {
     const [addCategoryValue, setAddCategoryValue] = useState("");
     const [addCategoryError, setAddCategoryError] = useState("");

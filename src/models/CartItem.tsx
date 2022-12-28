@@ -1,5 +1,6 @@
 import Error from "./Error";
 import Product from "./Product";
+import ResponseApi from "./ResponseApi";
 
 class CartItem extends Product {
     amount: number;
@@ -30,8 +31,8 @@ class CartItem extends Product {
             }
         );
 
-        const resJson = response.json();
-        return resJson;
+        const resJson = await response.json();
+        return resJson as ResponseApi;
     }
     async reduce(id: number, token: string, quantity: number) {
         const response = await fetch(
@@ -48,6 +49,8 @@ class CartItem extends Product {
                 },
             }
         );
+        const resJson = await response.json();
+        return resJson as ResponseApi;
     }
     static async fetchCart(token: string) {
         const response = await fetch(
@@ -64,7 +67,7 @@ class CartItem extends Product {
         if (resJson.ok) {
             return resJson.cart as CartItem[];
         } else {
-            return resJson.message as Error;
+            return resJson as ResponseApi;
         }
     }
 }

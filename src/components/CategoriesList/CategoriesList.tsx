@@ -3,7 +3,7 @@ import CategoryListItem from "../CategoryListItem/CategoryListItem";
 import styles from "./CategoriesList.module.scss";
 const CategoriesList: React.FC<{
     categories?: Category[];
-    setCategories: React.Dispatch<React.SetStateAction<Category[] | undefined>>;
+    setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 }> = (props) => {
     if (props.categories) {
         return (

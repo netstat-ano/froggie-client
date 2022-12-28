@@ -1,3 +1,5 @@
+import ResponseApi from "./ResponseApi";
+
 class Cart {
     token: string;
     constructor(token: string) {
@@ -8,6 +10,7 @@ class Cart {
             `${process.env.REACT_APP_API_URL}/cart/delete-cart`,
             {
                 method: "POST",
+                body: JSON.stringify({}),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${this.token}`,
@@ -15,11 +18,8 @@ class Cart {
             }
         );
         const resJson = await response.json();
-        if (resJson.ok) {
-            return resJson.message;
-        } else {
-            return resJson.message as Error;
-        }
+
+        return resJson as ResponseApi;
     }
 }
 export default Cart;

@@ -1,5 +1,23 @@
+@import "../../scss/variables";
 .order-card__header {
     h2 {
         margin-top: 0;
+        margin-bottom: 0.25rem;
     }
+}
+.order-card__total-price {
+    color: $green-theme;
+}
+.order-card:first-child {
+    margin-top: 0;
+}
+.order-card {
+    text-align: center;
+    font-size: 1.3rem;
+    width: 50%;
+    margin: 1rem;
+}
+.order-card__column-names {
+    width: 50%;
+    margin-bottom: 1rem;
 }

@@ -1,5 +1,7 @@
+import OrderSettings from "../interfaces/OrderSettings";
 import CartItem from "./CartItem";
 import OrderItem from "./OrderItem";
+import ResponseApi from "./ResponseApi";
 class Order {
     items: CartItem[];
     constructor(items: CartItem[]) {
@@ -23,14 +25,16 @@ class Order {
         if (resJson.ok) {
             return resJson.cart as CartItem[];
         } else {
-            return resJson.message as Error;
+            return resJson as ResponseApi;
         }
     }
-    static async fetchOrdersByUser(token: string) {
+    static async fetchOrdersByUser(token: string, settings: OrderSettings) {
+        const body = settings || {};
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/order/fetch-orders-by-user`,
             {
                 method: "POST",
+                body: JSON.stringify(body),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -41,7 +45,7 @@ class Order {
         if (resJson.ok) {
             return resJson.orders as OrderItem[];
         } else {
-            return resJson.message as Error;
+            return resJson as ResponseApi;
         }
     }
 }

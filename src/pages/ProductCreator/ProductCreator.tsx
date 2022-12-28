@@ -17,6 +17,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import CartItem from "../../models/CartItem";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
 import cart, { cartActions } from "../../store/cart";
+import ErrorNotification from "../../components/UI/ErrorNotification/ErrorNotification";
+import clearNotification from "../../utils/clearNotification";
 interface FormValues {
     productName: string;
     description: string;
@@ -25,10 +27,11 @@ interface FormValues {
 }
 const ProductCreator: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
-    const [categories, setCategories] = useState<Category[]>();
+    const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<Category>();
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
+    const [serverError, setServerError] = useState("");
     const navigate = useNavigate();
     useEffect(() => {
         const fetchCategories = async () => {
@@ -51,7 +54,6 @@ const ProductCreator: React.FC<{}> = () => {
         if (!values.productName) {
             errors.productName = "Required";
         }
-
         if (!values.description) {
             errors.description = "Required";
         }
@@ -99,7 +101,11 @@ const ProductCreator: React.FC<{}> = () => {
             }
             navigate(`/product/${searchParams.get("id")}`);
         } else {
-            product.save(token);
+            const response = await product.save(token);
+            if (!response.ok) {
+                setServerError(response.message);
+                clearNotification(setServerError, 2000);
+            }
         }
     };
     const onChangeCategoryHandler = (
@@ -111,162 +117,173 @@ const ProductCreator: React.FC<{}> = () => {
     };
     return (
         <Overlay className={styles["product-creator"]}>
-            <Formik
-                initialValues={{
-                    productName: searchParams.get("productName") || "",
-                    description: searchParams.get("description") || "",
-                    images: "",
-                    price: Number(searchParams.get("price")) || 0,
-                }}
-                validate={validate}
-                onSubmit={onSubmitHandler}
-            >
-                {(formProps) => (
-                    <Form>
-                        <div>
-                            <Input
-                                input={{
-                                    placeholder: "Name",
-                                    type: "text",
-                                    id: "productName",
-                                    name: "productName",
-                                    onBlur: formProps.handleBlur,
-                                    value: formProps.values.productName,
-                                    onChange: formProps.handleChange,
-                                }}
-                                invalid={Boolean(
-                                    formProps.touched.productName &&
-                                        formProps.errors.productName
-                                )}
-                            />
-                            {formProps.touched.productName &&
-                                formProps.errors.productName && (
-                                    <InputErrorMessage
-                                        message={formProps.errors.productName}
-                                    />
-                                )}
-                        </div>
-                        <div>
-                            <ImagePicker
-                                input={{
-                                    accept: "image/png, image/jpeg, image/webp, image/jpg",
-                                    id: "images",
-                                    name: "images",
-                                    multiple: "multiple",
-                                    onChange: (
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => {
-                                        formProps.setFieldValue(
-                                            "images",
-                                            event.target.files
-                                        );
-                                    },
-                                }}
-                                filesAmount={formProps.values.images.length}
-                                invalid={Boolean(
-                                    formProps.errors.images ||
-                                        !formProps.values.images
-                                )}
-                            />
-                            {formProps.touched.images &&
-                                formProps.errors.images && (
-                                    <InputErrorMessage
-                                        message={formProps.errors.images}
-                                    />
-                                )}
+            <>
+                {serverError && (
+                    <ErrorNotification>{serverError}</ErrorNotification>
+                )}
+                <Formik
+                    initialValues={{
+                        productName: searchParams.get("productName") || "",
+                        description: searchParams.get("description") || "",
+                        images: "",
+                        price: Number(searchParams.get("price")) || 0,
+                    }}
+                    validate={validate}
+                    onSubmit={onSubmitHandler}
+                >
+                    {(formProps) => (
+                        <Form>
                             <div>
-                                {formProps.values.images &&
-                                    formProps.values.images.length < 9 &&
-                                    Array.from(formProps.values.images).map(
-                                        (file, index) => (
-                                            <ImagePreview
-                                                key={index}
-                                                index={index}
-                                                styleFirst={true}
-                                                file={file}
-                                            />
-                                        )
+                                <Input
+                                    input={{
+                                        placeholder: "Name",
+                                        type: "text",
+                                        id: "productName",
+                                        name: "productName",
+                                        onBlur: formProps.handleBlur,
+                                        value: formProps.values.productName,
+                                        onChange: formProps.handleChange,
+                                    }}
+                                    invalid={Boolean(
+                                        formProps.touched.productName &&
+                                            formProps.errors.productName
+                                    )}
+                                />
+                                {formProps.touched.productName &&
+                                    formProps.errors.productName && (
+                                        <InputErrorMessage
+                                            message={
+                                                formProps.errors.productName
+                                            }
+                                        />
                                     )}
                             </div>
-                        </div>
-                        <div>
-                            <Textarea
-                                textarea={{
-                                    placeholder: "Description",
-                                    type: "text",
-                                    id: "description",
-                                    name: "description",
-                                    value: formProps.values.description,
-                                    onChange: formProps.handleChange,
-                                    onBlur: formProps.handleBlur,
-                                }}
-                                invalid={Boolean(
-                                    formProps.touched.description &&
-                                        formProps.errors.description
-                                )}
-                            />
-                            {formProps.touched.description &&
-                                formProps.errors.description && (
-                                    <InputErrorMessage
-                                        message={formProps.errors.description}
-                                    />
-                                )}
-                        </div>
-                        <div>
-                            <Input
-                                input={{
-                                    value: formProps.values.price,
-                                    onChange: formProps.handleChange,
-                                    onBlur: formProps.handleBlur,
-                                    type: "number",
-                                    name: "price",
-                                }}
-                                invalid={Boolean(
-                                    formProps.touched.price &&
-                                        formProps.errors.price
-                                )}
-                            />
-                        </div>
-                        <div>
-                            {categories && (
-                                <Select
-                                    select={{
-                                        onChange: onChangeCategoryHandler,
+                            <div>
+                                <ImagePicker
+                                    input={{
+                                        accept: "image/png, image/jpeg, image/webp, image/jpg",
+                                        id: "images",
+                                        name: "images",
+                                        multiple: "multiple",
+                                        onChange: (
+                                            event: React.ChangeEvent<HTMLInputElement>
+                                        ) => {
+                                            formProps.setFieldValue(
+                                                "images",
+                                                event.target.files
+                                            );
+                                        },
                                     }}
-                                    className={
-                                        styles["product-creator__select"]
-                                    }
-                                >
-                                    <>
-                                        {categories.map((category) => (
-                                            <option
-                                                value={JSON.stringify(category)}
-                                                key={category.id}
-                                            >
-                                                {category.name}
-                                            </option>
-                                        ))}
-                                    </>
-                                </Select>
-                            )}
-                            <br />
+                                    filesAmount={formProps.values.images.length}
+                                    invalid={Boolean(
+                                        formProps.errors.images ||
+                                            !formProps.values.images
+                                    )}
+                                />
+                                {formProps.touched.images &&
+                                    formProps.errors.images && (
+                                        <InputErrorMessage
+                                            message={formProps.errors.images}
+                                        />
+                                    )}
+                                <div>
+                                    {formProps.values.images &&
+                                        formProps.values.images.length < 9 &&
+                                        Array.from(formProps.values.images).map(
+                                            (file, index) => (
+                                                <ImagePreview
+                                                    key={index}
+                                                    index={index}
+                                                    styleFirst={true}
+                                                    file={file}
+                                                />
+                                            )
+                                        )}
+                                </div>
+                            </div>
+                            <div>
+                                <Textarea
+                                    textarea={{
+                                        placeholder: "Description",
+                                        type: "text",
+                                        id: "description",
+                                        name: "description",
+                                        value: formProps.values.description,
+                                        onChange: formProps.handleChange,
+                                        onBlur: formProps.handleBlur,
+                                    }}
+                                    invalid={Boolean(
+                                        formProps.touched.description &&
+                                            formProps.errors.description
+                                    )}
+                                />
+                                {formProps.touched.description &&
+                                    formProps.errors.description && (
+                                        <InputErrorMessage
+                                            message={
+                                                formProps.errors.description
+                                            }
+                                        />
+                                    )}
+                            </div>
+                            <div>
+                                <Input
+                                    input={{
+                                        value: formProps.values.price,
+                                        onChange: formProps.handleChange,
+                                        onBlur: formProps.handleBlur,
+                                        type: "number",
+                                        name: "price",
+                                    }}
+                                    invalid={Boolean(
+                                        formProps.touched.price &&
+                                            formProps.errors.price
+                                    )}
+                                />
+                            </div>
+                            <div>
+                                {categories && (
+                                    <Select
+                                        select={{
+                                            onChange: onChangeCategoryHandler,
+                                        }}
+                                        className={
+                                            styles["product-creator__select"]
+                                        }
+                                    >
+                                        <>
+                                            {categories.map((category) => (
+                                                <option
+                                                    value={JSON.stringify(
+                                                        category
+                                                    )}
+                                                    key={category.id}
+                                                >
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                        </>
+                                    </Select>
+                                )}
+                                <br />
 
-                            <CategoryCreator
-                                setCategories={setCategories}
-                                categories={categories}
-                            />
-                        </div>
+                                <CategoryCreator
+                                    setCategories={setCategories}
+                                    categories={categories}
+                                />
+                            </div>
 
-                        <SuccessButton button={{ type: "submit" }}>
-                            <>
-                                {Boolean(searchParams.get("edit")) === true
-                                    ? "Update product"
-                                    : "Add product"}
-                            </>
-                        </SuccessButton>
-                    </Form>
-                )}
-            </Formik>
+                            <SuccessButton button={{ type: "submit" }}>
+                                <>
+                                    {Boolean(searchParams.get("edit")) === true
+                                        ? "Update product"
+                                        : "Add product"}
+                                </>
+                            </SuccessButton>
+                        </Form>
+                    )}
+                </Formik>
+            </>
         </Overlay>
     );
 };

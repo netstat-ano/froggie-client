@@ -1,4 +1,5 @@
 import Error from "./Error";
+import ResponseApi from "./ResponseApi";
 class User {
     email: string;
     username?: string;

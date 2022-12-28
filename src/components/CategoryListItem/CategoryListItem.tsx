@@ -5,7 +5,7 @@ import styles from "./CategoryListItem.module.scss";
 import { useAppSelector } from "../../hooks/use-app-selector";
 const CategoryListItem: React.FC<{
     category: Category;
-    setCategories: React.Dispatch<React.SetStateAction<Category[] | undefined>>;
+    setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
 }> = (props) => {
     const token = useAppSelector((state) => state.authentication.token);
     const onDeleteCategoryHandler = async () => {

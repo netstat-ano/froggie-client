@@ -1,11 +1,11 @@
 @import "../../../scss/variables";
 .select {
-    background-color: DodgerBlue;
+    background-color: $success-theme;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     outline: none;
-    border: 2px solid $blue-theme;
+    border: 2px solid $green-theme;
     option {
-        background-color: DodgerBlue;
+        background-color: $success-theme;
     }
 }
