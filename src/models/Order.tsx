@@ -4,8 +4,27 @@ import OrderItem from "./OrderItem";
 import ResponseApi from "./ResponseApi";
 class Order {
     items: CartItem[];
-    constructor(items: CartItem[]) {
+
+    name: string;
+    surname: string;
+    address: string;
+    postalCode: string;
+    city: string;
+
+    constructor(
+        items: CartItem[],
+        name: string,
+        surname: string,
+        address: string,
+        postalCode: string,
+        city: string
+    ) {
         this.items = items;
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.city = city;
     }
     async save(token: string) {
         const response = await fetch(
@@ -14,6 +33,11 @@ class Order {
                 method: "POST",
                 body: JSON.stringify({
                     cartItems: this.items,
+                    name: this.name,
+                    surname: this.surname,
+                    address: this.address,
+                    postalCode: this.postalCode,
+                    city: this.city,
                 }),
                 headers: {
                     "Content-Type": "application/json",

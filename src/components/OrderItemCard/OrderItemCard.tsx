@@ -1,6 +1,5 @@
 import OrderItem from "../../models/OrderItem";
 import styles from "./OrderItemCard.module.scss";
-import Overlay from "../UI/Overlay/Overlay";
 const OrderItemCard: React.FC<{ item: OrderItem }> = (props) => {
     return (
         <div className="center">

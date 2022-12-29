@@ -30,14 +30,14 @@ const Orders: React.FC<{}> = () => {
     };
     useEffect(() => {
         fetchOrders({});
-    }, []);
+    }, [token]);
     const onSortHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         if (value === "OLDEST") {
-            fetchOrders({ sort: "DATE DESC" });
+            fetchOrders({ sort: "orders.createdAt DESC" });
         } else if (value === "NEWEST") {
-            fetchOrders({ sort: "DATE ASC" });
-        } else if (value === "DEFAULT") {
+            fetchOrders({ sort: "orders.createdAt ASC" });
+        } else {
             fetchOrders({});
         }
     };

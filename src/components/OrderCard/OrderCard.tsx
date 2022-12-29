@@ -36,6 +36,18 @@ const OrderCard: React.FC<{
                 {props.order.items.map((item) => (
                     <OrderItemCard item={item} key={item.id} />
                 ))}
+                <div>
+                    <div>Address:</div>
+                    <div>
+                        {props.order.items[0].customerName}{" "}
+                        {props.order.items[0].customerSurname}
+                    </div>
+                    <div>{props.order.items[0].address}</div>
+                    <div>
+                        {props.order.items[0].postalCode},{" "}
+                        {props.order.items[0].city}
+                    </div>
+                </div>
                 <div className={styles["order-card__total-price"]}>
                     Total price: ${totalPrice}
                 </div>

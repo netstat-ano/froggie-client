@@ -20,6 +20,7 @@ import { cartActions } from "./store/cart";
 import { useAppSelector } from "./hooks/use-app-selector";
 import Orders from "./pages/Orders/Orders";
 import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
+import Order from "./pages/Order/Order";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -98,6 +99,14 @@ function App() {
                         element={
                             <Main>
                                 <Orders />
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/order"
+                        element={
+                            <Main>
+                                <Order />
                             </Main>
                         }
                     />

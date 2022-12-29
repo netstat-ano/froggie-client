@@ -7,17 +7,11 @@ import { cartActions } from "../../store/cart";
 import CartModel from "../../models/Cart";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
 import Order from "../../models/Order";
+import { Link } from "react-router-dom";
 const Cart: React.FC<{}> = () => {
     const cart = useAppSelector((state) => state.cart);
     const token = useAppSelector((state) => state.authentication.token);
     const dispatch = useAppDispatch();
-    const onOrderHandler = async () => {
-        const order = new Order(cart.items);
-        order.save(token);
-        const cartModel = new CartModel(token);
-        dispatch(cartActions.reset());
-        await cartModel.delete();
-    };
     return (
         <div className="center">
             <Overlay className={styles.cart}>
@@ -37,11 +31,9 @@ const Cart: React.FC<{}> = () => {
                                 </span>
                             </div>
                             <div className={styles["cart__order-btn"]}>
-                                <SuccessButton
-                                    button={{ onClick: onOrderHandler }}
-                                >
-                                    Order now
-                                </SuccessButton>
+                                <Link to="/order">
+                                    <SuccessButton>Order now</SuccessButton>
+                                </Link>
                             </div>
                         </>
                     )}
