@@ -1,5 +1,8 @@
 import Error from "./Error";
 import ResponseApi from "./ResponseApi";
+export interface FetchedUser {
+    name: string;
+}
 class User {
     email: string;
     username?: string;
@@ -61,6 +64,26 @@ class User {
                 }
             );
             return response;
+        }
+    }
+    static async getDetails(id: number) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/auth/fetch-user-details`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    UserId: id,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const resJson = await response.json();
+        if (response.ok) {
+            return resJson.user as FetchedUser;
+        } else {
+            return resJson.message as string;
         }
     }
     static clearLocalstorage() {

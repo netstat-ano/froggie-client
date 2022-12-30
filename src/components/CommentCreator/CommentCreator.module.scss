@@ -1,0 +1,27 @@
+.comment-creator__textarea {
+    height: 5rem;
+}
+.comment-creator {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 20% 80%;
+
+    justify-items: center;
+}
+.comment-creator__rating {
+    margin-top: 1rem;
+    padding: 1rem;
+    grid-column: 1 / 3;
+}
+.comment-creator__add-btn {
+    grid-column: 1 /3;
+}
+.comment-creator__input-error {
+    font-size: 0.9rem;
+}
+.comment-creator__rating-error {
+    position: absolute;
+}
+.comment-creator__error {
+    position: absolute;
+}

@@ -17,6 +17,7 @@ import styles from "./ProductDetail.module.scss";
 import CartItem from "../../models/CartItem";
 import useLoading from "../../hooks/use-loading";
 import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
+import Comments from "../Comments/Comments";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
@@ -118,6 +119,7 @@ const ProductDetail: React.FC<{}> = () => {
                                 </SuccessButton>
                             </div>
                         )}
+                        <Comments />
                     </>
                 </Overlay>
             )}

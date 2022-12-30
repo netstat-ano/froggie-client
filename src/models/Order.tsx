@@ -46,11 +46,8 @@ class Order {
             }
         );
         const resJson = await response.json();
-        if (resJson.ok) {
-            return resJson.cart as CartItem[];
-        } else {
-            return resJson as ResponseApi;
-        }
+
+        return resJson as ResponseApi;
     }
     static async fetchOrdersByUser(token: string, settings: OrderSettings) {
         const body = settings || {};

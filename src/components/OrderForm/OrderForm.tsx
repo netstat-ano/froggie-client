@@ -37,15 +37,16 @@ const OrderForm: React.FC<{}> = () => {
             values.city
         );
         const response = await order.save(token);
-        if (!(response instanceof Array)) {
+
+        if (!response.ok) {
             setServerMessage(response.message);
             stop();
-            return;
+        } else {
+            const cartModel = new CartModel(token);
+            dispatch(cartActions.reset());
+            navigate("/my-orders");
+            await cartModel.delete();
         }
-        const cartModel = new CartModel(token);
-        dispatch(cartActions.reset());
-        navigate("/my-orders");
-        await cartModel.delete();
     };
     const onValidationHandler = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
