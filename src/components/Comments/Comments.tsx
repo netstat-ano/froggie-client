@@ -11,6 +11,7 @@ import CommentCard from "../CommentCard/CommentCard";
 const Comments: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
     const { productId } = useParams();
+    const [editingComment, setEditingComment] = useState<Comment>();
     const [comments, setComments] = useState<Comment[]>([]);
     const [serverMessage, setServerMessage] = useState("");
     const [isLoading, stop] = useLoading();
@@ -30,7 +31,13 @@ const Comments: React.FC<{}> = () => {
     }, [productId]);
     return (
         <div>
-            {token && <CommentCreator setComments={setComments} />}
+            {token && (
+                <CommentCreator
+                    editingComment={editingComment}
+                    setEditingComment={setEditingComment}
+                    setComments={setComments}
+                />
+            )}
             {isLoading && <LoadingSpinner />}
             {serverMessage && comments.length === 0 && (
                 <Header className={styles["comments__header"]}>
@@ -38,7 +45,12 @@ const Comments: React.FC<{}> = () => {
                 </Header>
             )}
             {comments.map((comment) => (
-                <CommentCard comment={comment} setComments={setComments} />
+                <CommentCard
+                    editingComment={editingComment}
+                    setEditingComment={setEditingComment}
+                    comment={comment}
+                    setComments={setComments}
+                />
             ))}
         </div>
     );

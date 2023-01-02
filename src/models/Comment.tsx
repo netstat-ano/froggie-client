@@ -36,7 +36,7 @@ class Comment {
                 ok: true,
             };
         }
-        return resJson as ResponseApi;
+        return resJson.message as string;
     }
     static async getCommentsByProductId(id: number) {
         const response = await fetch(
@@ -57,6 +57,53 @@ class Comment {
         } else {
             return resJson as ResponseApi;
         }
+    }
+    async update(token: string) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/comment/update-comment`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: this.id!,
+                    commentText: this.commentText,
+                    rate: this.rate,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const resJson = await response.json();
+
+        if (resJson.ok) {
+            return {
+                comment: resJson.comment as Comment,
+                message: "Created succesfully.",
+                ok: true,
+            };
+        }
+        return resJson.message as string;
+    }
+    async delete(token: string) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/comment/delete-comment`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: this.id!,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const resJson = await response.json();
+
+        return resJson as ResponseApi;
     }
 }
 export default Comment;
