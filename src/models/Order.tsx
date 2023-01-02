@@ -69,5 +69,21 @@ class Order {
             return resJson as ResponseApi;
         }
     }
+    static async checkIfUserPurchaseProduct(token: string, id: number) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/order/check-if-user-purchase`,
+            {
+                method: "POST",
+                body: JSON.stringify({ id: id }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        const resJson = await response.json();
+
+        return resJson.confirmed as number;
+    }
 }
 export default Order;

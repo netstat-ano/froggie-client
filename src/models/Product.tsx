@@ -107,5 +107,6 @@ class Product {
 
         return resJson as ResponseApi;
     }
+    static async checkIfUserPurchaseProduct(id: number) {}
 }
 export default Product;

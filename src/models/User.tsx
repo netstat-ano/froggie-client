@@ -1,7 +1,7 @@
 import Error from "./Error";
 import ResponseApi from "./ResponseApi";
 export interface FetchedUser {
-    name: string;
+    username: string;
 }
 class User {
     email: string;

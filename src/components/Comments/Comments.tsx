@@ -32,13 +32,13 @@ const Comments: React.FC<{}> = () => {
         <div>
             {token && <CommentCreator setComments={setComments} />}
             {isLoading && <LoadingSpinner />}
-            {serverMessage && (
+            {serverMessage && comments.length === 0 && (
                 <Header className={styles["comments__header"]}>
                     {serverMessage}
                 </Header>
             )}
             {comments.map((comment) => (
-                <CommentCard comment={comment} />
+                <CommentCard comment={comment} setComments={setComments} />
             ))}
         </div>
     );

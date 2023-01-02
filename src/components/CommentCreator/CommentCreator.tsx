@@ -11,6 +11,7 @@ import { useAppSelector } from "../../hooks/use-app-selector";
 import useServerError from "../../hooks/use-server-error";
 import ErrorNotification from "../UI/ErrorNotification/ErrorNotification";
 import { useParams } from "react-router";
+import Order from "../../models/Order";
 interface FormValues {
     commentText: string;
     toggledStars: number;
@@ -35,7 +36,13 @@ const CommentCreator: React.FC<{
             stop();
             return;
         }
+        const check = await Order.checkIfUserPurchaseProduct(
+            token,
+            Number(productId)
+        );
+
         comment.UserId = Number(userId);
+        comment.confirmedByPurchase = check;
         props.setComments((prevState) => [comment, ...prevState]);
     };
 

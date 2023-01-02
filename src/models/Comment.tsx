@@ -5,7 +5,7 @@ class Comment {
     id?: number;
     ProductId: number;
     commentText: string;
-    confirmedByPurchase?: boolean;
+    confirmedByPurchase?: number;
     rate: number;
     constructor(commentText: string, rate: number, ProductId: number) {
         this.rate = rate;
