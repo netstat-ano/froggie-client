@@ -4,8 +4,9 @@ import styles from "./UserCommentActions.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Comment from "../../models/Comment";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/use-app-selector";
+import Product from "../../models/Product";
 const UserCommentActions: React.FC<{
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
     comment: Comment;
@@ -13,8 +14,10 @@ const UserCommentActions: React.FC<{
     setEditingComment: React.Dispatch<
         React.SetStateAction<Comment | undefined>
     >;
+    setAverageRate: React.Dispatch<React.SetStateAction<string>>;
 }> = (props) => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const { productId } = useParams();
     const token = useAppSelector((state) => state.authentication.token);
     const onEditHandler = () => {
         if (!props.editingComment) {
@@ -48,6 +51,12 @@ const UserCommentActions: React.FC<{
         );
         comment.id = props.comment.id;
         await comment.delete(token);
+        const rate = await Product.fetchAverageRate(Number(productId));
+        if (typeof rate === "string") {
+            if (rate !== "null") {
+                props.setAverageRate(rate);
+            }
+        }
     };
     return (
         <div className={styles["user-comment-actions"]}>

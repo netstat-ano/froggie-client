@@ -13,6 +13,7 @@ import ErrorNotification from "../UI/ErrorNotification/ErrorNotification";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import Order from "../../models/Order";
+import Product from "../../models/Product";
 interface FormValues {
     commentText: string;
     toggledStars: number;
@@ -23,6 +24,7 @@ const CommentCreator: React.FC<{
     setEditingComment: React.Dispatch<
         React.SetStateAction<Comment | undefined>
     >;
+    setAverageRate: React.Dispatch<React.SetStateAction<string>>;
 }> = (props) => {
     const [toggledStars, setToggledStars] = useState<number>(0);
     const token = useAppSelector((state) => state.authentication.token);
@@ -45,7 +47,7 @@ const CommentCreator: React.FC<{
         ) {
             comment.id = Number(searchParams.get("id"));
             var response = await comment.update(token);
-
+            props.setEditingComment(undefined);
             setSearchParams("");
         } else {
             var response = await comment.save(token);
@@ -66,6 +68,12 @@ const CommentCreator: React.FC<{
         fetchedComment.confirmedByPurchase = check;
 
         props.setComments((prevState) => [fetchedComment, ...prevState]);
+        const rate = await Product.fetchAverageRate(Number(productId));
+        if (typeof rate === "string") {
+            if (rate !== "null") {
+                props.setAverageRate(rate);
+            }
+        }
     };
     const onValidationHandler = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};

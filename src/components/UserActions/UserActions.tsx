@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import UserMenu from "../UserMenu/UserMenu";
+import { cartActions } from "../../store/cart";
 const UserActions: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ const UserActions: React.FC<{}> = () => {
     const onLogoutHandler = () => {
         User.clearLocalstorage();
         navigate("/");
+        dispatch(cartActions.reset());
         dispatch(authenticationActions.logout());
     };
     const onOverUserHandler = () => {

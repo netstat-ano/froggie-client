@@ -11,7 +11,7 @@ import { authenticationActions } from "./store/authentication";
 import User from "./models/User";
 import Categories from "./pages/Categories/Categories";
 import Products from "./pages/Products/Products";
-import ProductDetail from "./components/ProductDetail/ProductDetail";
+import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import "./index.css";
 import Error404 from "./pages/Error404/Error404";
 import Cart from "./pages/Cart/Cart";

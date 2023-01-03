@@ -107,6 +107,24 @@ class Product {
 
         return resJson as ResponseApi;
     }
-    static async checkIfUserPurchaseProduct(id: number) {}
+    static async fetchAverageRate(id: number) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/product/fetch-average-rate`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ProductId: id }),
+            }
+        );
+        const resJson = await response.json();
+
+        if (resJson.ok) {
+            return resJson.rate as string;
+        } else {
+            return resJson as ResponseApi;
+        }
+    }
 }
 export default Product;

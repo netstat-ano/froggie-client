@@ -8,7 +8,10 @@ import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
 import Header from "../UI/Header/Header";
 import styles from "./Comments.module.scss";
 import CommentCard from "../CommentCard/CommentCard";
-const Comments: React.FC<{}> = () => {
+import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
+const Comments: React.FC<{
+    setAverageRate: React.Dispatch<React.SetStateAction<string>>;
+}> = (props) => {
     const token = useAppSelector((state) => state.authentication.token);
     const { productId } = useParams();
     const [editingComment, setEditingComment] = useState<Comment>();
@@ -27,12 +30,14 @@ const Comments: React.FC<{}> = () => {
                 setServerMessage(response.message);
             }
         };
+
         fetchComments();
     }, [productId]);
     return (
         <div>
             {token && (
                 <CommentCreator
+                    setAverageRate={props.setAverageRate}
                     editingComment={editingComment}
                     setEditingComment={setEditingComment}
                     setComments={setComments}
@@ -46,6 +51,7 @@ const Comments: React.FC<{}> = () => {
             )}
             {comments.map((comment) => (
                 <CommentCard
+                    setAverageRate={props.setAverageRate}
                     editingComment={editingComment}
                     setEditingComment={setEditingComment}
                     comment={comment}

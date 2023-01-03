@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import Product from "../../models/Product";
-import HeaderImage from "../HeaderImage/HeaderImage";
-import ImagePreview from "../ImagePreview/ImagePreview";
+import HeaderImage from "../../components/HeaderImage/HeaderImage";
+import ImagePreview from "../../components/ImagePreview/ImagePreview";
 import { cartActions } from "../../store/cart";
-import Overlay from "../UI/Overlay/Overlay";
-import SuccessButton from "../UI/SuccessButton/SuccessButton";
+import Overlay from "../../components/UI/Overlay/Overlay";
+import SuccessButton from "../../components/UI/SuccessButton/SuccessButton";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,11 +16,12 @@ import {
 import styles from "./ProductDetail.module.scss";
 import CartItem from "../../models/CartItem";
 import useLoading from "../../hooks/use-loading";
-import LoadingSpinner from "../UI/LoadingSpinner/LoadingSpinner";
-import Comments from "../Comments/Comments";
+import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
+import Comments from "../../components/Comments/Comments";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
+    const [averageRate, setAverageRate] = useState("");
     const dispatch = useAppDispatch();
     const token = useAppSelector((state) => state.authentication.token);
     const userType = useAppSelector((state) => state.authentication.type);
@@ -29,6 +30,13 @@ const ProductDetail: React.FC<{}> = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             const product = await Product.getProductByPk(productId!);
+            const rate = await Product.fetchAverageRate(Number(productId));
+            if (typeof rate === "string") {
+                if (rate !== "null") {
+                    setAverageRate(rate);
+                }
+            }
+
             if (product instanceof Object) {
                 setProduct(product);
                 stopLoading();
@@ -69,6 +77,17 @@ const ProductDetail: React.FC<{}> = () => {
                         <h2 className={styles["product-detail__name"]}>
                             {product?.name}
                         </h2>
+                        {averageRate && (
+                            <h3
+                                className={`${
+                                    parseFloat(averageRate) > 3
+                                        ? styles["good-rate"]
+                                        : styles["bad-rate"]
+                                }`}
+                            >
+                                {averageRate}/5.0
+                            </h3>
+                        )}
                         <div className={styles["product-detail__header-image"]}>
                             <HeaderImage
                                 url={`${process.env.REACT_APP_API_URL}/${product?.imagesURL[0]}`}
@@ -119,7 +138,7 @@ const ProductDetail: React.FC<{}> = () => {
                                 </SuccessButton>
                             </div>
                         )}
-                        <Comments />
+                        <Comments setAverageRate={setAverageRate} />
                     </>
                 </Overlay>
             )}

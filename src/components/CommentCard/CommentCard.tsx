@@ -14,6 +14,7 @@ const CommentCard: React.FC<{
     setEditingComment: React.Dispatch<
         React.SetStateAction<Comment | undefined>
     >;
+    setAverageRate: React.Dispatch<React.SetStateAction<string>>;
 }> = (props) => {
     const [userDetails, setUserDetails] = useState<FetchedUser>();
     const userId = useAppSelector((state) => state.authentication.userId);
@@ -70,6 +71,7 @@ const CommentCard: React.FC<{
             </div>
             {Number(userId) === props.comment.UserId && (
                 <UserCommentActions
+                    setAverageRate={props.setAverageRate}
                     setEditingComment={props.setEditingComment}
                     editingComment={props.editingComment}
                     comment={props.comment}
