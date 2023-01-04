@@ -24,6 +24,7 @@ const CommentCard: React.FC<{
 }> = (props) => {
     const [reactions, dispatchReactions] = useLikeSystem();
     const [userDetails, setUserDetails] = useState<FetchedUser>();
+    const [likeStatus, setLikeStatus] = useState("");
     const token = useAppSelector((state) => state.authentication.token);
     const userId = useAppSelector((state) => state.authentication.userId);
     useEffect(() => {
@@ -44,6 +45,11 @@ const CommentCard: React.FC<{
             );
             comment.id = props.comment.id;
             const data = await comment.fetchReactions();
+            console.log(data);
+
+            const isLiked = await comment.checkLikeStatus(token);
+            setLikeStatus(isLiked.status);
+
             dispatchReactions({
                 type: "INIT",
                 data: { likes: data.likes, dislikes: data.dislikes },
@@ -51,35 +57,49 @@ const CommentCard: React.FC<{
         };
         fetchReactions();
         fetchUserDetails();
-    }, [props.comment]);
+    }, []);
     const onLikeHandler = async () => {
-        const comment = new Comment(
-            props.comment.commentText,
-            props.comment.rate,
-            props.comment.ProductId
-        );
-        comment.id = props.comment.id;
-        const data = await comment.like(token);
-        if (typeof data !== "string") {
-            dispatchReactions({
-                type: "INIT",
-                data: { likes: data.likes, dislikes: data.dislikes },
-            });
+        if (token) {
+            const comment = new Comment(
+                props.comment.commentText,
+                props.comment.rate,
+                props.comment.ProductId
+            );
+            comment.id = props.comment.id;
+            if (likeStatus === "like") {
+                setLikeStatus("none");
+            } else {
+                setLikeStatus("like");
+            }
+            const data = await comment.like(token);
+            if (typeof data !== "string") {
+                dispatchReactions({
+                    type: "INIT",
+                    data: { likes: data.likes, dislikes: data.dislikes },
+                });
+            }
         }
     };
     const onDislikeHandler = async () => {
-        const comment = new Comment(
-            props.comment.commentText,
-            props.comment.rate,
-            props.comment.ProductId
-        );
-        comment.id = props.comment.id;
-        const data = await comment.dislike(token);
-        if (typeof data !== "string") {
-            dispatchReactions({
-                type: "INIT",
-                data: { likes: data.likes, dislikes: data.dislikes },
-            });
+        if (token) {
+            const comment = new Comment(
+                props.comment.commentText,
+                props.comment.rate,
+                props.comment.ProductId
+            );
+            comment.id = props.comment.id;
+            if (likeStatus === "dislike") {
+                setLikeStatus("none");
+            } else {
+                setLikeStatus("dislike");
+            }
+            const data = await comment.dislike(token);
+            if (typeof data !== "string") {
+                dispatchReactions({
+                    type: "INIT",
+                    data: { likes: data.likes, dislikes: data.dislikes },
+                });
+            }
         }
     };
     const visualizeRating = useCallback(() => {
@@ -135,25 +155,23 @@ const CommentCard: React.FC<{
             </div>
             <div className={styles["comment-card__comment-actions"]}>
                 <div
-                    className={
-                        styles["comment-card__comment-actions__thumbs-up"]
-                    }
+                    onClick={onLikeHandler}
+                    className={`
+                        ${styles["comment-card__comment-actions__thumbs-up"]} ${
+                        likeStatus === "like" && styles["liked"]
+                    }`}
                 >
-                    <FontAwesomeIcon
-                        onClick={onLikeHandler}
-                        icon={faThumbsUp}
-                    />
+                    <FontAwesomeIcon icon={faThumbsUp} />
                     {reactions.likes}
                 </div>
                 <div
-                    className={
-                        styles["comment-card__comment-actions__thumbs-down"]
-                    }
+                    onClick={onDislikeHandler}
+                    className={`
+                        ${
+                            styles["comment-card__comment-actions__thumbs-down"]
+                        } ${likeStatus === "dislike" && styles["disliked"]}`}
                 >
-                    <FontAwesomeIcon
-                        onClick={onDislikeHandler}
-                        icon={faThumbsDown}
-                    />
+                    <FontAwesomeIcon icon={faThumbsDown} />
                     {reactions.dislikes}
                 </div>
             </div>
