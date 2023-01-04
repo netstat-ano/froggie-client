@@ -4,9 +4,15 @@ import { FetchedUser } from "../../models/User";
 import User from "../../models/User";
 import styles from "./CommentCard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faStar,
+    faThumbsUp,
+    faThumbsDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import UserCommentActions from "../UserCommentActions/UserCommentActions";
+import useLikeSystem from "../../hooks/use-like-system";
 const CommentCard: React.FC<{
     comment: Comment;
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
@@ -16,7 +22,9 @@ const CommentCard: React.FC<{
     >;
     setAverageRate: React.Dispatch<React.SetStateAction<string>>;
 }> = (props) => {
+    const [reactions, dispatchReactions] = useLikeSystem();
     const [userDetails, setUserDetails] = useState<FetchedUser>();
+    const token = useAppSelector((state) => state.authentication.token);
     const userId = useAppSelector((state) => state.authentication.userId);
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -27,14 +35,59 @@ const CommentCard: React.FC<{
                 }
             }
         };
+
+        const fetchReactions = async () => {
+            const comment = new Comment(
+                props.comment.commentText,
+                props.comment.rate,
+                props.comment.ProductId
+            );
+            comment.id = props.comment.id;
+            const data = await comment.fetchReactions();
+            dispatchReactions({
+                type: "INIT",
+                data: { likes: data.likes, dislikes: data.dislikes },
+            });
+        };
+        fetchReactions();
         fetchUserDetails();
     }, [props.comment]);
+    const onLikeHandler = async () => {
+        const comment = new Comment(
+            props.comment.commentText,
+            props.comment.rate,
+            props.comment.ProductId
+        );
+        comment.id = props.comment.id;
+        const data = await comment.like(token);
+        if (typeof data !== "string") {
+            dispatchReactions({
+                type: "INIT",
+                data: { likes: data.likes, dislikes: data.dislikes },
+            });
+        }
+    };
+    const onDislikeHandler = async () => {
+        const comment = new Comment(
+            props.comment.commentText,
+            props.comment.rate,
+            props.comment.ProductId
+        );
+        comment.id = props.comment.id;
+        const data = await comment.dislike(token);
+        if (typeof data !== "string") {
+            dispatchReactions({
+                type: "INIT",
+                data: { likes: data.likes, dislikes: data.dislikes },
+            });
+        }
+    };
     const visualizeRating = useCallback(() => {
         const rating: JSX.Element[] = [];
         for (let i = 0; i < props.comment.rate; i++) {
             rating.push(
                 <FontAwesomeIcon
-                    className={styles["star-gold"]}
+                    className={`${styles["star-gold"]} ${styles["star"]}`}
                     icon={faStar}
                 />
             );
@@ -42,7 +95,7 @@ const CommentCard: React.FC<{
         for (let i = 5 - props.comment.rate; i > 0; i--) {
             rating.push(
                 <FontAwesomeIcon
-                    className={styles["star-black"]}
+                    className={`${styles["star-black"]} ${styles["star"]}`}
                     icon={faStar}
                 />
             );
@@ -55,7 +108,18 @@ const CommentCard: React.FC<{
             <div className={styles["comment-card__username"]}>
                 {userDetails?.username}
             </div>
-            <div>{rate.map((star) => star)}</div>
+            <div className={styles["comment-card__rate-actions__container"]}>
+                <div>{rate.map((star) => star)}</div>
+                {Number(userId) === props.comment.UserId && (
+                    <UserCommentActions
+                        setAverageRate={props.setAverageRate}
+                        setEditingComment={props.setEditingComment}
+                        editingComment={props.editingComment}
+                        comment={props.comment}
+                        setComments={props.setComments}
+                    />
+                )}
+            </div>
             <div className={styles["comment-card__confirmed"]}>
                 {props.comment.confirmedByPurchase === 0 ? (
                     ""
@@ -69,15 +133,30 @@ const CommentCard: React.FC<{
             <div className={styles["comment-card__comment-text"]}>
                 {props.comment.commentText}
             </div>
-            {Number(userId) === props.comment.UserId && (
-                <UserCommentActions
-                    setAverageRate={props.setAverageRate}
-                    setEditingComment={props.setEditingComment}
-                    editingComment={props.editingComment}
-                    comment={props.comment}
-                    setComments={props.setComments}
-                />
-            )}
+            <div className={styles["comment-card__comment-actions"]}>
+                <div
+                    className={
+                        styles["comment-card__comment-actions__thumbs-up"]
+                    }
+                >
+                    <FontAwesomeIcon
+                        onClick={onLikeHandler}
+                        icon={faThumbsUp}
+                    />
+                    {reactions.likes}
+                </div>
+                <div
+                    className={
+                        styles["comment-card__comment-actions__thumbs-down"]
+                    }
+                >
+                    <FontAwesomeIcon
+                        onClick={onDislikeHandler}
+                        icon={faThumbsDown}
+                    />
+                    {reactions.dislikes}
+                </div>
+            </div>
         </div>
     );
 };

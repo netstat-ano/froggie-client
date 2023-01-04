@@ -3,7 +3,7 @@ import Overlay from "../UI/Overlay/Overlay";
 import { Link } from "react-router-dom";
 const CategoryCard: React.FC<{ id: number; name: string }> = (props) => {
     return (
-        <Link className="link" to={`/${props.id}`}>
+        <Link className="link" to={`/category/${props.id}`}>
             <Overlay className={styles["category-card"]}>
                 <div>{props.name}</div>
             </Overlay>

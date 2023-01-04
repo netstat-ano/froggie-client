@@ -111,7 +111,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/:categoryId"
+                        path="/category/:categoryId"
                         element={
                             <Main>
                                 <Products />
@@ -135,20 +135,20 @@ function App() {
                         }
                     />
                     <Route
+                        path="/*"
+                        element={
+                            <Main>
+                                <Error404 />
+                            </Main>
+                        }
+                    />
+                    <Route
                         path="/"
                         element={
                             <Main>
                                 <>
                                     <Categories />
                                 </>
-                            </Main>
-                        }
-                    />
-                    <Route
-                        path="/*"
-                        element={
-                            <Main>
-                                <Error404 />
                             </Main>
                         }
                     />

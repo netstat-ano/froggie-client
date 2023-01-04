@@ -19,7 +19,7 @@ class User {
         this.username = username;
         this.retypePassword = retypePassword;
     }
-    async login() {
+    async login(dontLogout?: boolean) {
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/auth/login-user`,
             {
@@ -27,6 +27,7 @@ class User {
                 body: JSON.stringify({
                     email: this.email,
                     password: this.password,
+                    dontLogout: dontLogout,
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -36,7 +37,13 @@ class User {
         if (response.ok) {
             const userData = await response.json();
             localStorage.setItem("token", userData.token);
-            const expiredTime = new Date(Date.now() + 1 * (60 * 60 * 1000));
+            if (!dontLogout) {
+                var expiredTime = new Date(Date.now() + 1 * (60 * 60 * 1000));
+            } else {
+                var expiredTime = new Date(
+                    Date.now() + 10 * 365 * 24 * (60 * 60 * 1000)
+                );
+            }
             localStorage.setItem("type", userData.type);
             localStorage.setItem("expiresIn", String(expiredTime));
             localStorage.setItem("userId", String(userData.userId));

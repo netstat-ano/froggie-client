@@ -1,6 +1,6 @@
 import { useFormik, FormikErrors } from "formik";
 import User from "../../../models/User";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Overlay from "../../../components/UI/Overlay/Overlay";
 import Input from "../../../components/UI/Input/Input";
 import InputErrorMessage from "../../../components/UI/InputErrorMessage/InputErrorMessage";
@@ -22,6 +22,7 @@ const LoginForm: React.FC<{}> = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const cart = useAppSelector((state) => state.cart);
+    const inputRef = useRef<HTMLInputElement>(null);
     const validate = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
         if (!values.password) {
@@ -54,7 +55,12 @@ const LoginForm: React.FC<{}> = () => {
                     values.password,
                     undefined
                 );
-                const userSnapshot = await user.login();
+
+                if (inputRef.current!.checked) {
+                    var userSnapshot = await user.login(true);
+                } else {
+                    var userSnapshot = await user.login();
+                }
                 if (userSnapshot.ok) {
                     dispatch(
                         authenticationActions.login(userSnapshot.userData)
@@ -129,6 +135,14 @@ const LoginForm: React.FC<{}> = () => {
                                         message={formik.errors.password}
                                     />
                                 )}
+                        </div>
+                        <div className={styles["login-form__logout-options"]}>
+                            <input
+                                ref={inputRef}
+                                id="dont-logout"
+                                type="checkbox"
+                            ></input>
+                            <label htmlFor="dont-logout">Don't logout me</label>
                         </div>
                         <SuccessButton button={{ type: "submit" }}>
                             Sign up

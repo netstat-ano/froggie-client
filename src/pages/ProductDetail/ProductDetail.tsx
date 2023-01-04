@@ -114,7 +114,7 @@ const ProductDetail: React.FC<{}> = () => {
                                     button={{ onClick: onEditHandler }}
                                 >
                                     <>
-                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                        <FontAwesomeIcon icon={faPenToSquare} />{" "}
                                         Edit
                                     </>
                                 </SuccessButton>
@@ -132,7 +132,7 @@ const ProductDetail: React.FC<{}> = () => {
                                     <>
                                         <FontAwesomeIcon
                                             icon={faShoppingCart}
-                                        />
+                                        />{" "}
                                         Add to cart
                                     </>
                                 </SuccessButton>

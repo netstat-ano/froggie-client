@@ -16,11 +16,20 @@ const UserMenu: React.FC<{ onOver: () => void; onOut: () => void }> = (
             className={styles["user-menu"]}
         >
             <li>
-                <NavButton className={styles["user-menu__li__button"]}>
-                    <Link className="link" to={`/my-orders`}>
-                        My orders
-                    </Link>
-                </NavButton>
+                <div>
+                    <NavButton className={styles["user-menu__li__button"]}>
+                        <Link className="link" to={`/my-orders`}>
+                            My orders
+                        </Link>
+                    </NavButton>
+                </div>
+                <div>
+                    <NavButton className={styles["user-menu__li__button"]}>
+                        <Link className="link" to={`/orders-to-realize`}>
+                            Orders to realize
+                        </Link>
+                    </NavButton>
+                </div>
             </li>
         </HoverMenu>
     );

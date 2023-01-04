@@ -1,11 +1,13 @@
 import ResponseApi from "./ResponseApi";
-
+import { State as Reactions } from "../hooks/use-like-system";
 class Comment {
     UserId?: number;
     id?: number;
     ProductId: number;
     commentText: string;
     confirmedByPurchase?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
     rate: number;
     constructor(commentText: string, rate: number, ProductId: number) {
         this.rate = rate;
@@ -38,13 +40,14 @@ class Comment {
         }
         return resJson.message as string;
     }
-    static async getCommentsByProductId(id: number) {
+    static async getCommentsByProductId(id: number, sort?: string) {
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/comment/fetch-comments`,
             {
                 method: "POST",
                 body: JSON.stringify({
                     ProductId: id,
+                    sort: sort,
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -86,6 +89,54 @@ class Comment {
         }
         return resJson.message as string;
     }
+    async like(token: string) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/comment/like-comment`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: this.id!,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const resJson = await response.json();
+        if (resJson.ok) {
+            return {
+                likes: resJson.likes,
+                dislikes: resJson.dislikes,
+            } as Reactions;
+        }
+        return resJson.message as string;
+    }
+    async dislike(token: string) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/comment/dislike-comment`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: this.id!,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        const resJson = await response.json();
+        if (resJson.ok) {
+            return {
+                likes: resJson.likes,
+                dislikes: resJson.dislikes,
+            } as Reactions;
+        }
+        return resJson.message as string;
+    }
     async delete(token: string) {
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/comment/delete-comment`,
@@ -104,6 +155,27 @@ class Comment {
         const resJson = await response.json();
 
         return resJson as ResponseApi;
+    }
+    async fetchReactions() {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/comment/fetch-reactions`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: this.id!,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const resJson = await response.json();
+
+        return {
+            likes: resJson.likes,
+            dislikes: resJson.dislikes,
+        } as Reactions;
     }
 }
 export default Comment;
