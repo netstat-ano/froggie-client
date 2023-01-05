@@ -1,4 +1,4 @@
-import SuccessButton from "../UI/SuccessButton/SuccessButton";
+import SuccessButton from "../../UI/SuccessButton/SuccessButton";
 import { Link } from "react-router-dom";
 const UserAdminActions: React.FC<{}> = () => {
     return (

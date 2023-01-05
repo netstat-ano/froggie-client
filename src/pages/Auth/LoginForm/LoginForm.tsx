@@ -27,7 +27,7 @@ const LoginForm: React.FC<{}> = () => {
         const errors: FormikErrors<FormValues> = {};
         if (!values.password) {
             errors.password = "Required";
-        } else if (values.password.length < 7) {
+        } else if (values.password.trim().length < 7) {
             errors.password = "Must be 8 characters or more";
         }
 

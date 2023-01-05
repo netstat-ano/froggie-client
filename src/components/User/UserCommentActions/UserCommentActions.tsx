@@ -1,12 +1,12 @@
-import CanceledButton from "../UI/CanceledButton/CanceledButton";
-import SuccessButton from "../UI/SuccessButton/SuccessButton";
+import CanceledButton from "../../UI/CanceledButton/CanceledButton";
+import SuccessButton from "../../UI/SuccessButton/SuccessButton";
 import styles from "./UserCommentActions.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Comment from "../../models/Comment";
+import Comment from "../../../models/Comment";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useAppSelector } from "../../hooks/use-app-selector";
-import Product from "../../models/Product";
+import { useAppSelector } from "../../../hooks/use-app-selector";
+import Product from "../../../models/Product";
 const UserCommentActions: React.FC<{
     setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
     comment: Comment;

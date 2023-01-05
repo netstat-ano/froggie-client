@@ -1,0 +1,7 @@
+@import "../../../scss/variables";
+.notification {
+    background-color: $success-theme;
+    border: 3px solid $green-theme;
+    font-size: 1.2rem;
+    color: black;
+}

@@ -1,8 +1,8 @@
-import NavButton from "../UI/NavButton/NavButton";
-import User from "../../models/User";
-import { useAppDispatch } from "../../hooks/use-app-dispatch";
-import { authenticationActions } from "../../store/authentication";
-import { useAppSelector } from "../../hooks/use-app-selector";
+import NavButton from "../../UI/NavButton/NavButton";
+import User from "../../../models/User";
+import { useAppDispatch } from "../../../hooks/use-app-dispatch";
+import { authenticationActions } from "../../../store/authentication";
+import { useAppSelector } from "../../../hooks/use-app-selector";
 import UserAdminActions from "../UserAdminActions/UserAdminActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import UserMenu from "../UserMenu/UserMenu";
-import { cartActions } from "../../store/cart";
+import { cartActions } from "../../../store/cart";
 const UserActions: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

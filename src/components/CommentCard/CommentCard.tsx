@@ -11,7 +11,7 @@ import {
     faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAppSelector } from "../../hooks/use-app-selector";
-import UserCommentActions from "../UserCommentActions/UserCommentActions";
+import UserCommentActions from "../User/UserCommentActions/UserCommentActions";
 import useLikeSystem from "../../hooks/use-like-system";
 const CommentCard: React.FC<{
     comment: Comment;

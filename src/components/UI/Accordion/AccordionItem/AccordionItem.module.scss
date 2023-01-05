@@ -1,0 +1,19 @@
+@import "../../../../scss/variables";
+.accordion-item-showed {
+    border: 1px solid black;
+    background-color: $success-theme;
+    padding: 0.5rem;
+    h1 {
+        margin-bottom: 0;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
+.accordion-item-hidden {
+    font-size: 1.2rem;
+    border: 1px solid black;
+}
+.accordion-item {
+    max-width: 400px;
+}

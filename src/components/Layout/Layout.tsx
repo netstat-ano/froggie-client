@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import styles from "./Layout.module.scss";
 import NavButton from "../UI/NavButton/NavButton";
-import UserActions from "../UserActions/UserActions";
+import UserActions from "../User/UserActions/UserActions";
 const Layout: React.FC<{ children: JSX.Element }> = (props) => {
     const token = useAppSelector((state) => state.authentication.token);
     return (

@@ -93,6 +93,28 @@ class User {
             return resJson.message as string;
         }
     }
+    static async changePassword(
+        oldPassword: string,
+        newPassword: string,
+        token: string
+    ) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/auth/change-password`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    oldPassword,
+                    newPassword,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        const resJson = await response.json();
+        return resJson as ResponseApi;
+    }
     static clearLocalstorage() {
         localStorage.removeItem("expiresIn");
         localStorage.removeItem("userId");

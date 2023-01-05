@@ -25,13 +25,13 @@ const SignupForm: React.FC<{}> = () => {
         const errors: FormikErrors<FormValues> = {};
         if (!values.username) {
             errors.username = "Required";
-        } else if (values.username.length < 4) {
+        } else if (values.username.trim().length < 4) {
             errors.username = "Must be 4 characters or more";
         }
 
         if (!values.password) {
             errors.password = "Required";
-        } else if (values.password.length < 7) {
+        } else if (values.password.trim().length < 7) {
             errors.password = "Must be 8 characters or more";
         }
 
@@ -46,7 +46,7 @@ const SignupForm: React.FC<{}> = () => {
         if (!values.retypePassword) {
             errors.retypePassword = "Required";
         } else if (values.retypePassword !== values.password) {
-            errors.retypePassword = "Passwords must be the same";
+            errors.retypePassword = "Passwords must match";
         }
 
         return errors;

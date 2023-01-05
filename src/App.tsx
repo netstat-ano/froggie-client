@@ -21,6 +21,7 @@ import { useAppSelector } from "./hooks/use-app-selector";
 import Orders from "./pages/Orders/Orders";
 import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
 import Order from "./pages/Order/Order";
+import MyAccount from "./pages/MyAccount/MyAccount";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -131,6 +132,14 @@ function App() {
                         element={
                             <Main>
                                 <Error404 />
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/my-account"
+                        element={
+                            <Main>
+                                <MyAccount />
                             </Main>
                         }
                     />

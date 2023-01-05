@@ -1,8 +1,8 @@
 import styles from "./UserMenu.module.scss";
-import HoverMenu from "../UI/HoverMenu/HoverMenu";
-import NavButton from "../UI/NavButton/NavButton";
+import HoverMenu from "../../UI/HoverMenu/HoverMenu";
+import NavButton from "../../UI/NavButton/NavButton";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../hooks/use-app-selector";
+import { useAppSelector } from "../../../hooks/use-app-selector";
 const UserMenu: React.FC<{ onOver: () => void; onOut: () => void }> = (
     props
 ) => {
@@ -25,8 +25,8 @@ const UserMenu: React.FC<{ onOver: () => void; onOut: () => void }> = (
                 </div>
                 <div>
                     <NavButton className={styles["user-menu__li__button"]}>
-                        <Link className="link" to={`/orders-to-realize`}>
-                            Orders to realize
+                        <Link className="link" to={`/my-account`}>
+                            My account
                         </Link>
                     </NavButton>
                 </div>
