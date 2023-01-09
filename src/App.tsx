@@ -81,9 +81,7 @@ function App() {
                         path="/admin/create-product"
                         element={
                             <Main>
-                                <Modal>
-                                    <ProductCreator />
-                                </Modal>
+                                <ProductCreator />
                             </Main>
                         }
                     />

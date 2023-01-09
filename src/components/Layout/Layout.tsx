@@ -8,7 +8,7 @@ const Layout: React.FC<{ children: JSX.Element }> = (props) => {
     return (
         <>
             <div className={styles["header"]}>
-                <div>
+                <div className={styles["header__logo"]}>
                     <h1>
                         <Link
                             className={`link ${styles["header__headline"]}`}

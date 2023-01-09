@@ -68,6 +68,15 @@ const ProductDetail: React.FC<{}> = () => {
         dispatch(cartActions.addToCart({ ...cartItem, id: product!.id! }));
         await cartItem.addToCart(product!.id!, token);
     };
+    let rateStyles = "";
+    const parsedRate = parseFloat(averageRate);
+    if (parsedRate > 3 && parsedRate < 4) {
+        rateStyles = styles["average-rate"];
+    } else if (parsedRate >= 4) {
+        rateStyles = styles["good-rate"];
+    } else {
+        rateStyles = styles["bad-rate"];
+    }
     return (
         <div className={`center ${styles["product-detail"]}`}>
             {isLoading && <LoadingSpinner />}
@@ -78,15 +87,7 @@ const ProductDetail: React.FC<{}> = () => {
                             {product?.name}
                         </h2>
                         {averageRate && (
-                            <h3
-                                className={`${
-                                    parseFloat(averageRate) > 3
-                                        ? styles["good-rate"]
-                                        : styles["bad-rate"]
-                                }`}
-                            >
-                                {averageRate}/5.0
-                            </h3>
+                            <h3 className={rateStyles}>{averageRate}/5.0</h3>
                         )}
                         <div className={styles["product-detail__header-image"]}>
                             <HeaderImage

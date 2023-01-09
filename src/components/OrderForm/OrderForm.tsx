@@ -10,6 +10,7 @@ import { useAppSelector } from "../../hooks/use-app-selector";
 import { FormikHelpers } from "formik";
 import useServerError from "../../hooks/use-server-error";
 import { useNavigate } from "react-router";
+import styles from "./OrderForm.module.scss";
 import ErrorNotification from "../UI/ErrorNotification/ErrorNotification";
 interface FormValues {
     name: string;
@@ -185,7 +186,7 @@ const OrderForm: React.FC<{}> = () => {
                             />
                         )}
                     </div>
-                    <div>
+                    <div className={styles["order-form__btn"]}>
                         <SuccessButton button={{ type: "submit" }}>
                             Order
                         </SuccessButton>

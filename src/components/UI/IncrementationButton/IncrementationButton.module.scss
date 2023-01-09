@@ -1,16 +1,7 @@
 @import "../../../scss/variables";
 .incrementation-button__plus {
-    background-color: $success-theme;
-    border: 2px solid $green-theme;
+    padding: 0.3rem !important;
 }
 .incrementation-button__minus {
-    border: 2px solid $dark-canceled-theme;
-    background-color: $canceled-theme;
-}
-.incrementation-button__minus,
-.incrementation-button__plus {
-    padding: 0.25rem;
-    &:hover {
-        cursor: pointer;
-    }
+    padding: 0.3rem 0.4rem !important;
 }

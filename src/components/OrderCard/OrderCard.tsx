@@ -14,7 +14,7 @@ const OrderCard: React.FC<{
             <>
                 <div className={styles["order-card__header"]}>
                     <h2>Order no. {props.order.orderId}</h2>{" "}
-                    <span>
+                    <div className={styles["order-card__header__date"]}>
                         {creationDate.toLocaleString([], {
                             year: "numeric",
                             month: "numeric",
@@ -22,7 +22,7 @@ const OrderCard: React.FC<{
                             hour: "2-digit",
                             minute: "2-digit",
                         })}
-                    </span>
+                    </div>
                 </div>
                 <div className="center">
                     <div
@@ -36,7 +36,7 @@ const OrderCard: React.FC<{
                 {props.order.items.map((item) => (
                     <OrderItemCard item={item} key={item.id} />
                 ))}
-                <div>
+                <div className={styles["order-card__address"]}>
                     <div>Address:</div>
                     <div>
                         {props.order.items[0].customerName}{" "}

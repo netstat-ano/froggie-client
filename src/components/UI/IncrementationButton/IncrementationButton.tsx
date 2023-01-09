@@ -19,13 +19,19 @@ const IncrementationButton: React.FC<{
     return (
         <div>
             <div>
-                <SuccessButton button={{ onClick: onIncrementHandler }}>
+                <SuccessButton
+                    className={styles["incrementation-button__plus"]}
+                    button={{ onClick: onIncrementHandler }}
+                >
                     +
                 </SuccessButton>
             </div>
             <div>{number}</div>
             <div>
-                <CanceledButton button={{ onClick: onDecrementHandler }}>
+                <CanceledButton
+                    className={styles["incrementation-button__minus"]}
+                    button={{ onClick: onDecrementHandler }}
+                >
                     -
                 </CanceledButton>
             </div>

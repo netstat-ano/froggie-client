@@ -161,7 +161,7 @@ const CommentCard: React.FC<{
                         likeStatus === "like" && styles["liked"]
                     }`}
                 >
-                    <FontAwesomeIcon icon={faThumbsUp} />
+                    <FontAwesomeIcon icon={faThumbsUp} /> {"  "}
                     {reactions.likes}
                 </div>
                 <div
@@ -172,6 +172,7 @@ const CommentCard: React.FC<{
                         } ${likeStatus === "dislike" && styles["disliked"]}`}
                 >
                     <FontAwesomeIcon icon={faThumbsDown} />
+                    {"  "}
                     {reactions.dislikes}
                 </div>
             </div>

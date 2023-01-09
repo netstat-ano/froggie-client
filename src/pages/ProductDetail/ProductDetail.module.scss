@@ -8,6 +8,7 @@
 }
 .product-detail {
     font-size: 1.4rem;
+    padding: 1rem;
 }
 .product-detail__description {
     text-align: center;
@@ -24,4 +25,7 @@
 }
 .bad-rate {
     color: $canceled-theme;
+}
+.average-rate {
+    color: rgb(177, 177, 52);
 }

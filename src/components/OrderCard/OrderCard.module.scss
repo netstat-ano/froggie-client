@@ -20,6 +20,16 @@
 .order-card__column-names {
     width: 50%;
     margin-bottom: 1rem;
+    font-weight: 900;
+}
+.order-card__header__date {
+    color: $gray-theme;
+    font-size: 1rem;
+}
+.order-card__address {
+    margin-top: 1rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
 @media screen and (max-width: 768px) {
     .order-card {

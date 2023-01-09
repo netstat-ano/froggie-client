@@ -1,11 +1,13 @@
 @import "../../scss/variables";
 .product-card__img-preview {
-    width: 100px;
+    width: 150px;
 }
 .product-card {
     width: fit-content;
-    margin: 0 0.5rem 0.5rem 0.5rem;
+    margin: 1rem 0.5rem 0.5rem 1rem;
     padding: 0.5rem !important;
+    font-size: 1.8rem;
+    text-align: center;
     &:hover {
         cursor: pointer;
         background-color: white;
