@@ -10,6 +10,7 @@ import { cartActions } from "../../store/cart";
 const ProductCard: React.FC<{ product: Product }> = (props) => {
     const dispatch = useAppDispatch();
     const token = useAppSelector((state) => state.authentication.token);
+    const type = useAppSelector((state) => state.authentication.type);
     const onAddToCartHandler = async () => {
         const cartItem = new CartItem(
             props.product.name,
@@ -39,7 +40,7 @@ const ProductCard: React.FC<{ product: Product }> = (props) => {
                         $ {props.product.price}
                     </div>
                 </Link>
-                {token && (
+                {type === "customer" && (
                     <SuccessButton button={{ onClick: onAddToCartHandler }}>
                         Add to cart
                     </SuccessButton>

@@ -22,6 +22,7 @@ import Orders from "./pages/Orders/Orders";
 import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
 import Order from "./pages/Order/Order";
 import MyAccount from "./pages/MyAccount/MyAccount";
+import SignupForm from "./pages/Auth/SignupForm/SignupForm";
 function App() {
     const dispatch = useAppDispatch();
     const logout = () => {
@@ -138,6 +139,14 @@ function App() {
                         element={
                             <Main>
                                 <MyAccount />
+                            </Main>
+                        }
+                    />
+                    <Route
+                        path="/admin/signup"
+                        element={
+                            <Main>
+                                <SignupForm />
                             </Main>
                         }
                     />

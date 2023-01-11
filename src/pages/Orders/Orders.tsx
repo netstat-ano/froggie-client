@@ -15,11 +15,15 @@ import OrderSettings from "../../interfaces/OrderSettings";
 const Orders: React.FC<{}> = () => {
     const [orders, setOrders] = useState<ParsedOrders[]>([]);
     const token = useAppSelector((state) => state.authentication.token);
+    const type = useAppSelector((state) => state.authentication.type);
     const [serverMessage, setServerMessage] = useState("");
     const [isLoading, stopLoading] = useLoading();
     const fetchOrders = async (settings: OrderSettings) => {
-        const fetchedOrders = await Order.fetchOrdersByUser(token, settings);
-
+        // if (type === "customer") {
+        var fetchedOrders = await Order.fetchOrdersByUser(token, settings);
+        // } else {
+        //     var fetchedOrders = await Order.fetchOrders(token);
+        // }
         if (fetchedOrders instanceof Array) {
             setOrders(parseOrders(fetchedOrders));
             stopLoading();

@@ -121,7 +121,7 @@ const ProductDetail: React.FC<{}> = () => {
                                 </SuccessButton>
                             </div>
                         )}
-                        {token && (
+                        {userType === "customer" && (
                             <div
                                 className={
                                     styles["product-detail__add-to-cart"]

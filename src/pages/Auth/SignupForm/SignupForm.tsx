@@ -17,7 +17,7 @@ interface FormValues {
     password: string;
     retypePassword: string;
 }
-const SignupForm: React.FC<{}> = () => {
+const SignupForm: React.FC<{ admin?: boolean }> = (props) => {
     const [serverError, setServerError] = useState<string>("");
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -68,7 +68,7 @@ const SignupForm: React.FC<{}> = () => {
                     values.password,
                     values.retypePassword
                 );
-                const response = await user.create();
+                const response = await user.create(props.admin!);
                 if (response!.ok) {
                     const successResponse = await response!.json();
                     values.email = "";

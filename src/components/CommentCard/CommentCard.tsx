@@ -107,6 +107,7 @@ const CommentCard: React.FC<{
         for (let i = 0; i < props.comment.rate; i++) {
             rating.push(
                 <FontAwesomeIcon
+                    key={i}
                     className={`${styles["star-gold"]} ${styles["star"]}`}
                     icon={faStar}
                 />
@@ -115,6 +116,7 @@ const CommentCard: React.FC<{
         for (let i = 5 - props.comment.rate; i > 0; i--) {
             rating.push(
                 <FontAwesomeIcon
+                    key={10 + i}
                     className={`${styles["star-black"]} ${styles["star"]}`}
                     icon={faStar}
                 />

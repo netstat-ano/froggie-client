@@ -65,7 +65,10 @@ const LoginForm: React.FC<{}> = () => {
                     dispatch(
                         authenticationActions.login(userSnapshot.userData)
                     );
-                    if (cart.items.length === 0) {
+                    if (
+                        cart.items.length === 0 &&
+                        userSnapshot.userData.type !== "admin"
+                    ) {
                         const fetchedCart = await CartItem.fetchCart(
                             userSnapshot.userData.token
                         );

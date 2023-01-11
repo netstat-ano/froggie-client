@@ -53,7 +53,7 @@ class User {
         const responseMessage = await response.json();
         return { message: responseMessage.message, ok: false };
     }
-    async create() {
+    async create(admin: boolean) {
         if (this.username && this.retypePassword) {
             const response = await fetch(
                 `${process.env.REACT_APP_API_URL}/auth/create-user`,
@@ -64,6 +64,7 @@ class User {
                         username: this.username,
                         password: this.password,
                         retypePassword: this.retypePassword,
+                        admin: admin,
                     }),
                     headers: {
                         "Content-Type": "application/json",

@@ -47,20 +47,24 @@ const UserActions: React.FC<{}> = () => {
             {isMenuUserShowed && (
                 <UserMenu onOver={onOverUserHandler} onOut={onOutUserHandler} />
             )}
-            <NavButton className={styles["user-action__element"]}>
-                <Link className="link" to="/cart">
-                    {cart.items.length > 0 && (
-                        <div
-                            className={
-                                styles["user-action__element__total-products"]
-                            }
-                        >
-                            {cart.totalProducts}
-                        </div>
-                    )}
-                    <FontAwesomeIcon icon={faCartShopping} />
-                </Link>
-            </NavButton>
+            {userType === "customer" && (
+                <NavButton className={styles["user-action__element"]}>
+                    <Link className="link" to="/cart">
+                        {cart.items.length > 0 && (
+                            <div
+                                className={
+                                    styles[
+                                        "user-action__element__total-products"
+                                    ]
+                                }
+                            >
+                                {cart.totalProducts}
+                            </div>
+                        )}
+                        <FontAwesomeIcon icon={faCartShopping} />
+                    </Link>
+                </NavButton>
+            )}
             {userType === "admin" && <UserAdminActions />}
             <NavButton button={{ onClick: onLogoutHandler }}>Log out</NavButton>
         </nav>

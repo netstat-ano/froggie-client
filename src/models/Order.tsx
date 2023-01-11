@@ -85,5 +85,18 @@ class Order {
 
         return resJson.confirmed as number;
     }
+    static async fetchOrders(token: string) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/order/fetch-orders`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        const resJson = await response.json();
+    }
 }
 export default Order;
