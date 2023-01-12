@@ -8,6 +8,8 @@ const parseOrders = (orders: OrderItem[]) => {
             parsedIds.push(order.OrderId);
             parsedOrders.unshift({
                 orderId: order.OrderId,
+                completed: order.completed,
+                canceled: order.canceled,
                 items: orders.filter((ord) => ord.OrderId === order.OrderId),
             });
         }

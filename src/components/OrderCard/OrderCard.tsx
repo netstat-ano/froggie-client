@@ -3,12 +3,16 @@ import OrderItem from "../../models/OrderItem";
 import OrderItemCard from "../OrderItemCard/OrderItemCard";
 import styles from "./OrderCard.module.scss";
 import Overlay from "../UI/Overlay/Overlay";
+import { useAppSelector } from "../../hooks/use-app-selector";
+import OrderAdminActions from "../OrderAdminActions/OrderAdminActions";
 const OrderCard: React.FC<{
     order: ParsedOrders;
+    setOrders: React.Dispatch<React.SetStateAction<ParsedOrders[]>>;
 }> = (props) => {
     const prices = props.order.items.map((item) => item.price * item.amount);
     const totalPrice = prices.reduce((a, b) => a + b);
     const creationDate = new Date(props.order.items[0].createdAt);
+    const type = useAppSelector((state) => state.authentication.type);
     return (
         <Overlay className={styles["order-card"]}>
             <>
@@ -51,6 +55,12 @@ const OrderCard: React.FC<{
                 <div className={styles["order-card__total-price"]}>
                     Total price: ${totalPrice}
                 </div>
+                {type === "admin" && (
+                    <OrderAdminActions
+                        setOrders={props.setOrders}
+                        order={props.order}
+                    />
+                )}
             </>
         </Overlay>
     );

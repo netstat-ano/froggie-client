@@ -23,8 +23,11 @@ import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
 import Order from "./pages/Order/Order";
 import MyAccount from "./pages/MyAccount/MyAccount";
 import SignupForm from "./pages/Auth/SignupForm/SignupForm";
+import Unauthorized from "./pages/Unauthorized/Unauthorized";
 function App() {
     const dispatch = useAppDispatch();
+    const token = useAppSelector((state) => state.authentication.token);
+    const type = useAppSelector((state) => state.authentication.type);
     const logout = () => {
         dispatch(authenticationActions.logout());
         User.clearLocalstorage();
@@ -77,39 +80,64 @@ function App() {
                             </Main>
                         }
                     />
-
+                    {type === "admin" && (
+                        <Route
+                            path="/admin/create-product"
+                            element={
+                                <Main>
+                                    <ProductCreator />
+                                </Main>
+                            }
+                        />
+                    )}
+                    {type === "customer" && (
+                        <Route
+                            path="/cart"
+                            element={
+                                <Main>
+                                    <Cart />
+                                </Main>
+                            }
+                        />
+                    )}
+                    {token && (
+                        <Route
+                            path="/my-orders"
+                            element={
+                                <Main>
+                                    <Orders />
+                                </Main>
+                            }
+                        />
+                    )}
+                    {token && (
+                        <Route
+                            path="/my-orders/:orderType"
+                            element={
+                                <Main>
+                                    <Orders />
+                                </Main>
+                            }
+                        />
+                    )}
                     <Route
-                        path="/admin/create-product"
+                        path="/unauthorized"
                         element={
                             <Main>
-                                <ProductCreator />
+                                <Unauthorized />
                             </Main>
                         }
                     />
-                    <Route
-                        path="/cart"
-                        element={
-                            <Main>
-                                <Cart />
-                            </Main>
-                        }
-                    />
-                    <Route
-                        path="/my-orders"
-                        element={
-                            <Main>
-                                <Orders />
-                            </Main>
-                        }
-                    />
-                    <Route
-                        path="/order"
-                        element={
-                            <Main>
-                                <Order />
-                            </Main>
-                        }
-                    />
+                    {type === "customer" && (
+                        <Route
+                            path="/order"
+                            element={
+                                <Main>
+                                    <Order />
+                                </Main>
+                            }
+                        />
+                    )}
                     <Route
                         path="/category/:categoryId"
                         element={
@@ -134,19 +162,21 @@ function App() {
                             </Main>
                         }
                     />
-                    <Route
-                        path="/my-account"
-                        element={
-                            <Main>
-                                <MyAccount />
-                            </Main>
-                        }
-                    />
+                    {token && (
+                        <Route
+                            path="/my-account"
+                            element={
+                                <Main>
+                                    <MyAccount />
+                                </Main>
+                            }
+                        />
+                    )}
                     <Route
                         path="/admin/signup"
                         element={
                             <Main>
-                                <SignupForm />
+                                <SignupForm admin={true} />
                             </Main>
                         }
                     />

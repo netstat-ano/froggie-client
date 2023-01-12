@@ -1,8 +1,7 @@
 @import "../../../scss/variables";
 .button {
-    border: none;
+    border: 2px solid transparent;
     padding: 0.4rem;
-    padding-bottom: 0.5rem;
     outline: none;
     background-color: inherit;
     font-size: 1.2rem;
@@ -14,7 +13,6 @@
 .btn-without-border {
     border: none;
     padding: 0.4rem;
-    padding-bottom: 0.5rem;
     outline: none;
     background-color: inherit;
     font-size: 1.2rem;

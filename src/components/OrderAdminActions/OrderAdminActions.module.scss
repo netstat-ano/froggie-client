@@ -1,0 +1,28 @@
+@import "../../scss/variables";
+.order-admin-actions__check {
+    color: $green-theme;
+    margin-right: 1rem;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.order-admin-actions__cancel {
+    color: $canceled-theme;
+    margin-left: 1rem;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.order-admin-actions {
+    margin-top: 1rem;
+    font-size: 2rem;
+}
+.order-admin-actions__box-opened {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 2rem;
+    background-color: $gray-theme;
+    &:hover {
+        cursor: pointer;
+    }
+}

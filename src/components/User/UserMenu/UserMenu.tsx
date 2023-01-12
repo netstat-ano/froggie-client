@@ -6,7 +6,6 @@ import { useAppSelector } from "../../../hooks/use-app-selector";
 const UserMenu: React.FC<{ onOver: () => void; onOut: () => void }> = (
     props
 ) => {
-    const userId = useAppSelector((state) => state.authentication.userId);
     return (
         <HoverMenu
             div={{
@@ -18,7 +17,7 @@ const UserMenu: React.FC<{ onOver: () => void; onOut: () => void }> = (
             <li>
                 <div>
                     <NavButton className={styles["user-menu__li__button"]}>
-                        <Link className="link" to={`/my-orders`}>
+                        <Link className="link" to={"/my-orders/uncompleted"}>
                             My orders
                         </Link>
                     </NavButton>

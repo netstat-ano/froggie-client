@@ -8,6 +8,8 @@ class OrderItem extends Product {
     postalCode: string;
     city: string;
     address: string;
+    completed: number;
+    canceled: number;
     constructor(
         name: string,
         description: string,
@@ -21,7 +23,9 @@ class OrderItem extends Product {
         customerSurname: string,
         postalCode: string,
         city: string,
-        address: string
+        address: string,
+        completed: number,
+        canceled: number
     ) {
         super(name, description, price, imagesURL, categoryId);
         this.amount = amount;
@@ -32,6 +36,8 @@ class OrderItem extends Product {
         this.postalCode = postalCode;
         this.city = city;
         this.address = address;
+        this.completed = completed;
+        this.canceled = canceled;
     }
 }
 export default OrderItem;

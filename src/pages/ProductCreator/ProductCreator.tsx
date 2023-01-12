@@ -27,6 +27,7 @@ interface FormValues {
 }
 const ProductCreator: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
+    const type = useAppSelector((state) => state.authentication.type);
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<Category>();
     const [searchParams] = useSearchParams();
@@ -115,6 +116,11 @@ const ProductCreator: React.FC<{}> = () => {
         const category = new Category(target.name, target.id);
         setSelectedCategory(category);
     };
+    useEffect(() => {
+        if (!token || type !== "admin") {
+            navigate("/unauthorized");
+        }
+    }, []);
     return (
         <Overlay className={styles["product-creator"]}>
             <>

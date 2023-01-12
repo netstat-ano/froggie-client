@@ -1,5 +1,8 @@
 import styles from "./Header.module.scss";
-const Header: React.FC<{ children: string; className?: string }> = (props) => {
+const Header: React.FC<{
+    children: string | JSX.Element;
+    className?: string;
+}> = (props) => {
     return (
         <div>
             <h1

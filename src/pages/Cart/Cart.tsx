@@ -3,15 +3,20 @@ import CartItemCard from "../../components/CartItemCard/CartItemCard";
 import Overlay from "../../components/UI/Overlay/Overlay";
 import styles from "./Cart.module.scss";
 import SuccessButton from "../../components/UI/SuccessButton/SuccessButton";
-import { cartActions } from "../../store/cart";
-import CartModel from "../../models/Cart";
+import { useEffect } from "react";
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
-import Order from "../../models/Order";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 const Cart: React.FC<{}> = () => {
     const cart = useAppSelector((state) => state.cart);
     const token = useAppSelector((state) => state.authentication.token);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!token) {
+            navigate("/unauthorized");
+        }
+    }, []);
     return (
         <div className="center">
             <Overlay className={styles.cart}>
