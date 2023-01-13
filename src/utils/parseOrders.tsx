@@ -10,6 +10,8 @@ const parseOrders = (orders: OrderItem[]) => {
                 orderId: order.OrderId,
                 completed: order.completed,
                 canceled: order.canceled,
+                locker: order.locker,
+                classroom: order.classroom,
                 items: orders.filter((ord) => ord.OrderId === order.OrderId),
             });
         }

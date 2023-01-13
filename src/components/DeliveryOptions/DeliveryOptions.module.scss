@@ -1,0 +1,26 @@
+@import "../../scss/variables";
+.delivery-options__options {
+    display: flex;
+    justify-content: center;
+}
+.delivery-options__options__icon {
+    font-size: 3rem;
+}
+.delivery-options__options__locker {
+    margin-left: 2rem;
+}
+.delivery-options__options {
+    margin-top: 1rem;
+}
+.delivery-options__options__classroom,
+.delivery-options__options__locker {
+    border: 1px solid $green-theme;
+    padding: 0.5rem;
+    &:hover {
+        cursor: pointer;
+        background-color: $success-theme;
+    }
+}
+.delivery-options__options__active {
+    background-color: $success-theme;
+}

@@ -43,13 +43,19 @@ const OrderCard: React.FC<{
                 <div className={styles["order-card__address"]}>
                     <div>Address:</div>
                     <div>
-                        {props.order.items[0].customerName}{" "}
-                        {props.order.items[0].customerSurname}
-                    </div>
-                    <div>{props.order.items[0].address}</div>
-                    <div>
-                        {props.order.items[0].postalCode},{" "}
-                        {props.order.items[0].city}
+                        <div>
+                            {props.order.items[0].customerName}{" "}
+                            {props.order.items[0].customerSurname}
+                        </div>
+                        <div>Grade: {props.order.items[0].grade}</div>
+                        <div>
+                            {props.order.classroom > 0
+                                ? `Delivery to classroom: ${props.order.classroom}`
+                                : ""}
+                            {props.order.locker > 0
+                                ? `Delivery to locker: ${props.order.locker}`
+                                : ""}
+                        </div>
                     </div>
                 </div>
                 <div className={styles["order-card__total-price"]}>

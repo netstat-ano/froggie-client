@@ -7,24 +7,24 @@ class Order {
 
     name: string;
     surname: string;
-    address: string;
-    postalCode: string;
-    city: string;
+    grade: string;
+    locker?: number;
+    classroom?: number;
 
     constructor(
         items: CartItem[],
         name: string,
         surname: string,
-        address: string,
-        postalCode: string,
-        city: string
+        grade: string,
+        classroom?: number,
+        locker?: number
     ) {
         this.items = items;
         this.name = name;
         this.surname = surname;
-        this.address = address;
-        this.postalCode = postalCode;
-        this.city = city;
+        this.grade = grade;
+        this.classroom = classroom;
+        this.locker = locker;
     }
     async save(token: string) {
         const response = await fetch(
@@ -35,9 +35,9 @@ class Order {
                     cartItems: this.items,
                     name: this.name,
                     surname: this.surname,
-                    address: this.address,
-                    postalCode: this.postalCode,
-                    city: this.city,
+                    grade: this.grade,
+                    classroom: this.classroom,
+                    locker: this.locker,
                 }),
                 headers: {
                     "Content-Type": "application/json",

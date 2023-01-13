@@ -5,11 +5,11 @@ class OrderItem extends Product {
     createdAt: Date;
     customerName: string;
     customerSurname: string;
-    postalCode: string;
-    city: string;
-    address: string;
+    grade: string;
     completed: number;
     canceled: number;
+    locker: number;
+    classroom: number;
     constructor(
         name: string,
         description: string,
@@ -21,11 +21,11 @@ class OrderItem extends Product {
         createdAt: Date,
         customerName: string,
         customerSurname: string,
-        postalCode: string,
-        city: string,
-        address: string,
+        grade: string,
         completed: number,
-        canceled: number
+        canceled: number,
+        locker: number,
+        classroom: number
     ) {
         super(name, description, price, imagesURL, categoryId);
         this.amount = amount;
@@ -33,11 +33,11 @@ class OrderItem extends Product {
         this.createdAt = createdAt;
         this.customerName = customerName;
         this.customerSurname = customerSurname;
-        this.postalCode = postalCode;
-        this.city = city;
-        this.address = address;
+        this.grade = grade;
         this.completed = completed;
         this.canceled = canceled;
+        this.locker = locker;
+        this.classroom = classroom;
     }
 }
 export default OrderItem;

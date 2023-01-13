@@ -2,9 +2,7 @@ import { Formik, FormikErrors } from "formik";
 import Input from "../UI/Input/Input";
 import InputErrorMessage from "../UI/InputErrorMessage/InputErrorMessage";
 import SuccessButton from "../UI/SuccessButton/SuccessButton";
-import Order from "../../models/Order";
-import CartModel from "../../models/Cart";
-import { cartActions } from "../../store/cart";
+
 import { useAppDispatch } from "../../hooks/use-app-dispatch";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import { FormikHelpers } from "formik";
@@ -15,9 +13,7 @@ import ErrorNotification from "../UI/ErrorNotification/ErrorNotification";
 interface FormValues {
     name: string;
     surname: string;
-    address: string;
-    city: string;
-    postalCode: string;
+    grade: string;
 }
 const OrderForm: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
@@ -29,25 +25,9 @@ const OrderForm: React.FC<{}> = () => {
         values: FormValues,
         actions: FormikHelpers<FormValues>
     ) => {
-        const order = new Order(
-            cart.items,
-            values.name,
-            values.surname,
-            values.address,
-            values.postalCode,
-            values.city
+        navigate(
+            `/delivery?name=${values.name}&surname=${values.surname}&grade=${values.grade}`
         );
-        const response = await order.save(token);
-
-        if (!response.ok) {
-            setServerMessage(response.message);
-            stop();
-        } else {
-            const cartModel = new CartModel(token);
-            dispatch(cartActions.reset());
-            navigate("/my-orders");
-            await cartModel.delete();
-        }
     };
     const onValidationHandler = (values: FormValues) => {
         const errors: FormikErrors<FormValues> = {};
@@ -57,15 +37,10 @@ const OrderForm: React.FC<{}> = () => {
         if (!values.surname) {
             errors.surname = "Required";
         }
-        if (!values.address) {
-            errors.address = "Required";
+        if (!values.grade) {
+            errors.grade = "Required";
         }
-        if (!values.city) {
-            errors.city = "Required";
-        }
-        if (!values.postalCode) {
-            errors.postalCode = "Required";
-        }
+
         return errors;
     };
     return (
@@ -75,9 +50,7 @@ const OrderForm: React.FC<{}> = () => {
             initialValues={{
                 name: "",
                 surname: "",
-                address: "",
-                postalCode: "",
-                city: "",
+                grade: "",
             }}
         >
             {(formProps) => (
@@ -130,65 +103,25 @@ const OrderForm: React.FC<{}> = () => {
                             input={{
                                 onChange: formProps.handleChange,
                                 onBlur: formProps.handleBlur,
-                                value: formProps.values.address,
-                                placeholder: "Address",
-                                id: "address",
+                                value: formProps.values.grade,
+                                placeholder: "Grade",
+                                id: "grade",
                             }}
                             invalid={Boolean(
-                                formProps.touched.address &&
-                                    formProps.errors.address
+                                formProps.touched.grade &&
+                                    formProps.errors.grade
                             )}
                         />
-                        {formProps.touched.address &&
-                            formProps.errors.address && (
-                                <InputErrorMessage
-                                    message={formProps.errors.address}
-                                />
-                            )}
-                    </div>
-                    <div>
-                        <Input
-                            input={{
-                                onChange: formProps.handleChange,
-                                onBlur: formProps.handleBlur,
-                                value: formProps.values.postalCode,
-                                placeholder: "Postal code",
-                                id: "postalCode",
-                            }}
-                            invalid={Boolean(
-                                formProps.touched.postalCode &&
-                                    formProps.errors.postalCode
-                            )}
-                        />
-                        {formProps.touched.postalCode &&
-                            formProps.errors.postalCode && (
-                                <InputErrorMessage
-                                    message={formProps.errors.postalCode}
-                                />
-                            )}
-                    </div>
-                    <div>
-                        <Input
-                            input={{
-                                onChange: formProps.handleChange,
-                                onBlur: formProps.handleBlur,
-                                value: formProps.values.city,
-                                placeholder: "City",
-                                id: "city",
-                            }}
-                            invalid={Boolean(
-                                formProps.touched.city && formProps.errors.city
-                            )}
-                        />
-                        {formProps.touched.city && formProps.errors.city && (
+                        {formProps.touched.grade && formProps.errors.grade && (
                             <InputErrorMessage
-                                message={formProps.errors.city}
+                                message={formProps.errors.grade}
                             />
                         )}
                     </div>
+
                     <div className={styles["order-form__btn"]}>
                         <SuccessButton button={{ type: "submit" }}>
-                            Order
+                            Go to delivery
                         </SuccessButton>
                     </div>
                 </form>

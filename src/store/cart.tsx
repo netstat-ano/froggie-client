@@ -25,6 +25,7 @@ const cart = createSlice({
                 );
                 state.items[index] = findedProduct;
             }
+            state.totalPrice = Number(state.totalPrice.toFixed(2));
         },
         reduce(state, action) {
             const findedProduct = state.items.find(
@@ -45,6 +46,7 @@ const cart = createSlice({
                 }
                 state.totalPrice -=
                     action.payload.quantity * findedProduct.price;
+                state.totalPrice = Number(state.totalPrice.toFixed(2));
             }
         },
         init(state, action) {
@@ -54,6 +56,7 @@ const cart = createSlice({
                     state.totalPrice += item.amount * item.price;
                     state.totalProducts += item.amount;
                 });
+                state.totalPrice = Number(state.totalPrice.toFixed(2));
             }
         },
         reset(state) {

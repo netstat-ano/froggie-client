@@ -24,6 +24,7 @@ import Order from "./pages/Order/Order";
 import MyAccount from "./pages/MyAccount/MyAccount";
 import SignupForm from "./pages/Auth/SignupForm/SignupForm";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
+import Delivery from "./pages/Delivery/Delivery";
 function App() {
     const dispatch = useAppDispatch();
     const token = useAppSelector((state) => state.authentication.token);
@@ -134,6 +135,16 @@ function App() {
                             element={
                                 <Main>
                                     <Order />
+                                </Main>
+                            }
+                        />
+                    )}
+                    {type === "customer" && (
+                        <Route
+                            path="/delivery"
+                            element={
+                                <Main>
+                                    <Delivery />
                                 </Main>
                             }
                         />
