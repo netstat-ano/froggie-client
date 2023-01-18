@@ -10,6 +10,7 @@ class OrderItem extends Product {
     canceled: number;
     locker: number;
     classroom: number;
+    UserId?: number;
     constructor(
         name: string,
         description: string,

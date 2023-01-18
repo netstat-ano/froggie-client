@@ -1,0 +1,20 @@
+@import "../../../scss/variables";
+.notification-tab {
+    height: 150px;
+    overflow-y: scroll;
+    position: absolute;
+    background-color: white;
+    margin-right: 1rem;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    div:first-child {
+        margin-top: 0;
+        border-top: none;
+    }
+}
+.notification-tab__mark_btn {
+    font-size: 1rem;
+    padding: 0;
+    font-weight: bold;
+}

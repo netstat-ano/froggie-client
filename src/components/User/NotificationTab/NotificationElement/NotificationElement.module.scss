@@ -1,0 +1,11 @@
+@import "../../../../scss/variables";
+.notification-element {
+    border-top: 1px solid black;
+    padding-bottom: 0.5rem;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.notification-element-unseen {
+    background-color: $light-success-theme;
+}

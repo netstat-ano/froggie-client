@@ -19,12 +19,14 @@ import CartItem from "./models/CartItem";
 import { cartActions } from "./store/cart";
 import { useAppSelector } from "./hooks/use-app-selector";
 import Orders from "./pages/Orders/Orders";
-import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
+import Notification from "./models/Notification";
 import Order from "./pages/Order/Order";
 import MyAccount from "./pages/MyAccount/MyAccount";
 import SignupForm from "./pages/Auth/SignupForm/SignupForm";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import Delivery from "./pages/Delivery/Delivery";
+import { notificationsActions } from "./store/notification";
+import openSocket from "socket.io-client";
 function App() {
     const dispatch = useAppDispatch();
     const token = useAppSelector((state) => state.authentication.token);
@@ -50,9 +52,19 @@ function App() {
                     const token = localStorage.getItem("token");
                     const userId = localStorage.getItem("userId");
                     const type = localStorage.getItem("type");
+                    const notifications =
+                        await Notification.fetchNotificationsByUser(token!);
+
                     dispatch(
                         authenticationActions.login({ token, userId, type })
                     );
+                    if (typeof notifications.ok === "string") {
+                        dispatch(
+                            notificationsActions.init(
+                                notifications.notifications
+                            )
+                        );
+                    }
                     let remainingMiliseconds =
                         expiresTime.getTime() - currentDate.getTime();
                     if (cart.items.length === 0) {
@@ -63,6 +75,8 @@ function App() {
                     }
                     setTimeout(() => {
                         logout();
+                        dispatch(cartActions.reset());
+                        dispatch(notificationsActions.reset());
                     }, remainingMiliseconds);
                 }
             }

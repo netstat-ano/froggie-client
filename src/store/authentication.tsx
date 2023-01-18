@@ -1,6 +1,5 @@
 import { createSlice, ThunkAction } from "@reduxjs/toolkit";
-import { RootState } from "./index";
-import { AnyAction } from "redux";
+import openSocket from "socket.io-client";
 const authentication = createSlice({
     name: "authentication",
     initialState: { token: "", userId: "", type: "" },

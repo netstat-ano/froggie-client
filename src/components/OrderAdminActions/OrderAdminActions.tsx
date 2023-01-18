@@ -8,6 +8,7 @@ import styles from "./OrderAdminActions.module.scss";
 import ParsedOrders from "../../interfaces/ParsedOrders";
 import Order from "../../models/Order";
 import { useAppSelector } from "../../hooks/use-app-selector";
+import Notification from "../../models/Notification";
 const OrderAdminActions: React.FC<{
     order: ParsedOrders;
     setOrders: React.Dispatch<React.SetStateAction<ParsedOrders[]>>;
@@ -25,6 +26,11 @@ const OrderAdminActions: React.FC<{
                         (order) => order.orderId !== props.order.orderId
                     )
                 );
+                const notification = new Notification(
+                    props.order.items[0].UserId!,
+                    `Your order no. ${props.order.orderId} was completed`
+                );
+                notification.save(token);
             }
         }
     };
@@ -37,6 +43,11 @@ const OrderAdminActions: React.FC<{
                         (order) => order.orderId !== props.order.orderId
                     )
                 );
+                const notification = new Notification(
+                    props.order.items[0].UserId!,
+                    `Your order no. ${props.order.orderId} was canceled`
+                );
+                notification.save(token);
             }
         }
     };
@@ -52,6 +63,11 @@ const OrderAdminActions: React.FC<{
                         (order) => order.orderId !== props.order.orderId
                     )
                 );
+                const notification = new Notification(
+                    props.order.items[0].UserId!,
+                    `Your order no. ${props.order.orderId} was marked as uncompleted`
+                );
+                notification.save(token);
             }
         }
     };

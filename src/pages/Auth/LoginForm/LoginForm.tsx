@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import CartItem from "../../../models/CartItem";
 import { cartActions } from "../../../store/cart";
 import { useAppSelector } from "../../../hooks/use-app-selector";
+import Notification from "../../../models/Notification";
+import { notificationsActions } from "../../../store/notification";
 interface FormValues {
     email: string;
     password: string;
@@ -65,6 +67,17 @@ const LoginForm: React.FC<{}> = () => {
                     dispatch(
                         authenticationActions.login(userSnapshot.userData)
                     );
+                    const notifications =
+                        await Notification.fetchNotificationsByUser(
+                            userSnapshot.userData.token
+                        );
+                    if (typeof notifications.ok === "string") {
+                        dispatch(
+                            notificationsActions.init(
+                                notifications.notifications
+                            )
+                        );
+                    }
                     if (
                         cart.items.length === 0 &&
                         userSnapshot.userData.type !== "admin"
