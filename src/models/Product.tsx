@@ -22,7 +22,7 @@ class Product {
         this.categoryId = categoryId;
         this.price = price;
     }
-    async save(token: string) {
+    async save(token: string, signal?: AbortSignal) {
         const data = new FormData();
         data.append("productName", this.name);
         data.append("description", this.description);
@@ -31,7 +31,6 @@ class Product {
         for (let i = 0; i < this.imagesURL.length; i++) {
             data.append("images", this.imagesURL[i]);
         }
-
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/product/create-product`,
             {
@@ -40,9 +39,12 @@ class Product {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                signal: signal,
             }
         );
         const resJson = await response.json();
+        console.log(resJson);
+
         return resJson as ResponseApi;
     }
     static async getProductByCategory(id: string) {
@@ -83,7 +85,7 @@ class Product {
             return resJson.message as string;
         }
     }
-    async update(token: string, id: number) {
+    async update(token: string, id: number, signal?: AbortSignal) {
         const data = new FormData();
         data.append("ProductId", String(id));
         data.append("productName", this.name);
@@ -101,6 +103,7 @@ class Product {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                signal: signal,
             }
         );
         const resJson = await response.json();

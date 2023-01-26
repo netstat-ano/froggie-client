@@ -1,10 +1,4 @@
 .product-creator {
-    // position: absolute;
-    // margin-left: auto;
-    // margin-right: auto;
-    // top: 25%;
-    // left: 0;
-    // right: 0;
     margin: auto;
 
     text-align: center;
@@ -12,4 +6,14 @@
 }
 .product-creator__select {
     font-size: 1.2rem;
+}
+.product-creator__img_preview {
+    margin-top: 1rem;
+    max-width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    img {
+        width: 30%;
+    }
 }

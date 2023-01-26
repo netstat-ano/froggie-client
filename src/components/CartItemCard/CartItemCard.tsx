@@ -58,7 +58,7 @@ const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
     return (
         <div className={`${styles["cart-item-card"]} center`}>
             <>
-                <div>
+                <div className={styles["cart-item-card__img"]}>
                     <ImagePreview url={product.imagesURL[0]} />
                 </div>
                 <div>{product.name}</div>

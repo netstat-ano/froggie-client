@@ -34,7 +34,7 @@ const ProductCard: React.FC<{ product: Product }> = (props) => {
                     </div>
                     <img
                         className={styles["product-card__img-preview"]}
-                        src={`${process.env.REACT_APP_API_URL}/${props.product.imagesURL[0]}`}
+                        src={`${process.env.REACT_APP_FTP_IMG_URL}/${props.product.imagesURL[0]}`}
                     ></img>
                     <div className={styles["product-card__price"]}>
                         $ {props.product.price}

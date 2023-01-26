@@ -18,6 +18,7 @@ import CartItem from "../../models/CartItem";
 import useLoading from "../../hooks/use-loading";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import Comments from "../../components/Comments/Comments";
+import Slider from "../../components/UI/Slider/Slider";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
@@ -81,7 +82,7 @@ const ProductDetail: React.FC<{}> = () => {
         <div className={`center ${styles["product-detail"]}`}>
             {isLoading && <LoadingSpinner />}
             {!isLoading && (
-                <Overlay>
+                <Overlay className={styles["product-detail__overlay"]}>
                     <>
                         <h2 className={styles["product-detail__name"]}>
                             {product?.name}
@@ -89,20 +90,9 @@ const ProductDetail: React.FC<{}> = () => {
                         {averageRate && (
                             <h3 className={rateStyles}>{averageRate}/5.0</h3>
                         )}
-                        <div className={styles["product-detail__header-image"]}>
-                            <HeaderImage
-                                url={`${process.env.REACT_APP_API_URL}/${product?.imagesURL[0]}`}
-                            />
-                        </div>
-                        <div>
-                            {product?.imagesURL.map(
-                                (url: string, index: number) => {
-                                    if (index !== 0) {
-                                        return <ImagePreview url={url} />;
-                                    }
-                                }
-                            )}
-                        </div>
+
+                        <Slider images={product?.imagesURL} />
+
                         <div className={styles["product-detail__description"]}>
                             {product?.description}
                         </div>

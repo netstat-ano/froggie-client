@@ -26,7 +26,6 @@ import SignupForm from "./pages/Auth/SignupForm/SignupForm";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import Delivery from "./pages/Delivery/Delivery";
 import { notificationsActions } from "./store/notification";
-import openSocket from "socket.io-client";
 function App() {
     const dispatch = useAppDispatch();
     const token = useAppSelector((state) => state.authentication.token);

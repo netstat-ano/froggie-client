@@ -5,6 +5,8 @@ const ImagePreview: React.FC<{
     file?: any;
     index?: number;
     styleFirst?: boolean;
+    className?: string;
+    img?: {};
 }> = (props) => {
     const [url, setUrl] = useState("");
     let optionalStyle = "";
@@ -19,9 +21,13 @@ const ImagePreview: React.FC<{
     }, [props.file]);
     return (
         <img
-            className={`${styles["image-preview"]} ${optionalStyle}`}
+            {...props.img}
+            loading="lazy"
+            className={`${styles["image-preview"]} ${optionalStyle} ${
+                props.className ? props.className : ""
+            }`}
             src={`${
-                url ? url : `${process.env.REACT_APP_API_URL}/${props.url}`
+                url ? url : `${process.env.REACT_APP_FTP_IMG_URL}/${props.url}`
             }`}
         ></img>
     );

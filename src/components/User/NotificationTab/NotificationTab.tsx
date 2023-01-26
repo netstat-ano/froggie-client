@@ -17,7 +17,7 @@ const NotificationTab: React.FC<{
     const dispatch = useAppDispatch();
     useEffect(() => {
         const listenNotifications = async () => {
-            const socket = openSocket("http://localhost:8080");
+            const socket = openSocket(`${process.env.REACT_APP_API_URL}`);
             socket.on("notification", async (data) => {
                 if (
                     data.action === "create" &&
@@ -55,7 +55,10 @@ const NotificationTab: React.FC<{
                 </NavButton>
             </div>
             {items.map((notification) => (
-                <NotificationElement notification={notification}>
+                <NotificationElement
+                    key={notification.id}
+                    notification={notification}
+                >
                     {notification.message}
                 </NotificationElement>
             ))}

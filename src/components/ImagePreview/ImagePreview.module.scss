@@ -1,7 +1,8 @@
 @import "../../scss/variables";
 .image-preview {
-    width: 100px;
+    width: 100%;
     padding: 0.5rem;
+    object-fit: contain;
 }
 .image-preview__first-image {
     border: 2px solid $success-theme;

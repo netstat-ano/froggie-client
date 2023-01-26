@@ -10,6 +10,13 @@
     font-size: 1.4rem;
     padding: 1rem;
 }
+.product-detail__overlay {
+    max-width: 40%;
+}
+.product-detail__img {
+    max-width: 600px;
+    text-align: center;
+}
 .product-detail__description {
     text-align: center;
 }
@@ -28,4 +35,9 @@
 }
 .average-rate {
     color: rgb(177, 177, 52);
+}
+@media screen and (max-width: 600px) {
+    .product-detail__overlay {
+        max-width: 100%;
+    }
 }
