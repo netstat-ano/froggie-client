@@ -18,11 +18,13 @@
     text-align: center;
 }
 .product-detail__description {
+    padding: 0.5rem;
     text-align: center;
 }
 .product-detail__price {
     text-align: center;
     color: $green-theme;
+    font-size: 2rem;
 }
 .product-detail__add-to-cart {
     margin-top: 0.5rem;

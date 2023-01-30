@@ -47,6 +47,25 @@ class Product {
 
         return resJson as ResponseApi;
     }
+    static async delete(id: number, token: string) {
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/product/delete-product`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: id,
+                }),
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const resJson = await response.json();
+        console.log(resJson);
+
+        return resJson as ResponseApi;
+    }
     static async getProductByCategory(id: string) {
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/product/fetch-product-by-category`,

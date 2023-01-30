@@ -136,7 +136,6 @@ const CommentCreator: React.FC<{
                             )}
                     </div>
                 </div>
-                <div>Avatar</div>
                 <div>
                     <AutoRezisingTextarea
                         textarea={{

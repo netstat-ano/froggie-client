@@ -20,6 +20,7 @@ import cart, { cartActions } from "../../store/cart";
 import ErrorNotification from "../../components/UI/ErrorNotification/ErrorNotification";
 import clearNotification from "../../utils/clearNotification";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
+import AutoRezisingTextarea from "../../components/UI/AutoResizingTextarea/AutoResizingTextarea";
 interface FormValues {
     productName: string;
     description: string;
@@ -239,7 +240,7 @@ const ProductCreator: React.FC<{}> = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <Textarea
+                                        <AutoRezisingTextarea
                                             textarea={{
                                                 placeholder: "Description",
                                                 type: "text",
@@ -247,14 +248,18 @@ const ProductCreator: React.FC<{}> = () => {
                                                 name: "description",
                                                 value: formProps.values
                                                     .description,
-                                                onChange:
-                                                    formProps.handleChange,
+                                                onInput: formProps.handleChange,
                                                 onBlur: formProps.handleBlur,
                                             }}
                                             invalid={Boolean(
                                                 formProps.touched.description &&
                                                     formProps.errors.description
                                             )}
+                                            className={
+                                                styles[
+                                                    "product-creator__textarea"
+                                                ]
+                                            }
                                         />
                                         {formProps.touched.description &&
                                             formProps.errors.description && (

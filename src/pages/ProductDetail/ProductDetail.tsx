@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faPenToSquare,
     faShoppingCart,
+    faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./ProductDetail.module.scss";
 import CartItem from "../../models/CartItem";
@@ -19,6 +20,7 @@ import useLoading from "../../hooks/use-loading";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import Comments from "../../components/Comments/Comments";
 import Slider from "../../components/UI/Slider/Slider";
+import CanceledButton from "../../components/UI/CanceledButton/CanceledButton";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
@@ -27,6 +29,7 @@ const ProductDetail: React.FC<{}> = () => {
     const token = useAppSelector((state) => state.authentication.token);
     const userType = useAppSelector((state) => state.authentication.type);
     const navigate = useNavigate();
+    const [serverMessage, setServerMessage] = useState("");
     const [isLoading, stopLoading] = useLoading();
     useEffect(() => {
         const fetchProduct = async () => {
@@ -57,6 +60,14 @@ const ProductDetail: React.FC<{}> = () => {
             }&id=${product!.id!}`
         );
     };
+    const onDeleteHandler = async () => {
+        const response = await Product.delete(Number(product!.id), token);
+        if (!response.ok) {
+            setServerMessage(response.message);
+        } else {
+            navigate(`/category/${product?.categoryId}`);
+        }
+    };
     const onAddToCartHandler = async () => {
         const cartItem = new CartItem(
             product!.name,
@@ -81,6 +92,7 @@ const ProductDetail: React.FC<{}> = () => {
     return (
         <div className={`center ${styles["product-detail"]}`}>
             {isLoading && <LoadingSpinner />}
+
             {!isLoading && (
                 <Overlay className={styles["product-detail__overlay"]}>
                     <>
@@ -108,7 +120,15 @@ const ProductDetail: React.FC<{}> = () => {
                                         <FontAwesomeIcon icon={faPenToSquare} />{" "}
                                         Edit
                                     </>
-                                </SuccessButton>
+                                </SuccessButton>{" "}
+                                <CanceledButton
+                                    button={{ onClick: onDeleteHandler }}
+                                >
+                                    <>
+                                        <FontAwesomeIcon icon={faTrash} />{" "}
+                                        Delete
+                                    </>
+                                </CanceledButton>
                             </div>
                         )}
                         {userType === "customer" && (
