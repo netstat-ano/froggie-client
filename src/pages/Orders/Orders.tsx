@@ -13,12 +13,14 @@ import Select from "../../components/UI/Select/Select";
 import styles from "./Orders.module.scss";
 import OrderSettings from "../../interfaces/OrderSettings";
 import NavButton from "../../components/UI/NavButton/NavButton";
+import openSocket from "socket.io-client";
 const Orders: React.FC<{}> = () => {
     const [orders, setOrders] = useState<ParsedOrders[]>([]);
     const token = useAppSelector((state) => state.authentication.token);
     const type = useAppSelector((state) => state.authentication.type);
     const { orderType } = useParams();
     const navigate = useNavigate();
+    const UserId = useAppSelector((state) => state.authentication.userId);
     const [serverMessage, setServerMessage] = useState("");
     const [isLoading, stopLoading] = useLoading();
     useEffect(() => {
@@ -81,8 +83,17 @@ const Orders: React.FC<{}> = () => {
             setServerMessage(fetchedOrders.message);
         }
     };
+    const listenOrderChanges = () => {
+        const socket = openSocket(`${process.env.REACT_APP_API_URL}`);
+        socket.on("order", async (data) => {
+            if (data.UserId === Number(UserId) && data.action === "change") {
+                fetchOrders({});
+            }
+        });
+    };
     useEffect(() => {
         fetchOrders({});
+        listenOrderChanges();
     }, [token, orderType]);
     const onSortHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;

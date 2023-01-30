@@ -50,6 +50,7 @@ const Slider: React.FC<{ images: any }> = (props) => {
                     {props?.images.map((url: string, index: number) => {
                         return (
                             <div
+                                key={url}
                                 className={`${
                                     styles["slider__thumbnails__img"]
                                 } ${

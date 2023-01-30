@@ -18,9 +18,12 @@
     }
 }
 .slider__main {
+    width: 100%;
+    height: 400px;
+    padding-bottom: 4rem;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    background-color: $light-background-theme;
+    background-color: $dark-background-theme;
 }
 .slider__thumbnails {
     background-color: $dark-background-theme;
