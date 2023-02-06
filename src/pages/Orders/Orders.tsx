@@ -1,5 +1,5 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import Order from "../../models/Order";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import OrderCard from "../../components/OrderCard/OrderCard";
@@ -82,16 +82,21 @@ const Orders: React.FC<{}> = () => {
             setServerMessage(fetchedOrders.message);
         }
     };
-    const listenOrderChanges = () => {
-        const socket = openSocket(`${process.env.REACT_APP_API_URL}`);
-        socket.on("order", async (data) => {
-            if (data.UserId === Number(UserId) && data.action === "change") {
-                fetchOrders({});
-            }
-        });
-    };
     useEffect(() => {
         fetchOrders({});
+    }, [token, orderType]);
+    useEffect(() => {
+        const listenOrderChanges = () => {
+            const socket = openSocket(`${process.env.REACT_APP_API_URL}`);
+            socket.on("order", async (data) => {
+                if (
+                    data.UserId === Number(UserId) &&
+                    data.action === "change"
+                ) {
+                    fetchOrders({});
+                }
+            });
+        };
         listenOrderChanges();
     }, [token, orderType]);
     const onSortHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
