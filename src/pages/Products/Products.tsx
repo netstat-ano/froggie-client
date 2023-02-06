@@ -1,5 +1,5 @@
-import { useNavigate, useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { useEffect, useState, useCallback } from "react";
 import Product from "../../models/Product";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import styles from "./Products.module.scss";
@@ -13,22 +13,25 @@ const Products: React.FC<{}> = (props) => {
     const [products, setProducts] = useState<Product[]>();
     const [isLoading, stopLoading] = useLoading();
     const [serverMessage, setServerMessage] = useState("");
-    const fetchProducts = async (options?: SortSettings) => {
-        const fetchedProducts = await Product.getProductByCategory(
-            categoryId!,
-            options?.sort
-        );
-        if (fetchedProducts instanceof Array) {
-            setProducts(fetchedProducts);
-            stopLoading();
-        } else {
-            stopLoading();
-            setServerMessage("No products found.");
-        }
-    };
+    const fetchProducts = useCallback(
+        async (options?: SortSettings) => {
+            const fetchedProducts = await Product.getProductByCategory(
+                categoryId!,
+                options?.sort
+            );
+            if (fetchedProducts instanceof Array) {
+                setProducts(fetchedProducts);
+                stopLoading();
+            } else {
+                stopLoading();
+                setServerMessage("No products found.");
+            }
+        },
+        [categoryId]
+    );
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [fetchProducts]);
     const onSortHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
 

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppSelector } from "../../hooks/use-app-selector";
 import Product from "../../models/Product";
-import HeaderImage from "../../components/HeaderImage/HeaderImage";
-import ImagePreview from "../../components/ImagePreview/ImagePreview";
 import { cartActions } from "../../store/cart";
 import Overlay from "../../components/UI/Overlay/Overlay";
 import SuccessButton from "../../components/UI/SuccessButton/SuccessButton";
@@ -21,6 +19,7 @@ import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import Comments from "../../components/Comments/Comments";
 import Slider from "../../components/UI/Slider/Slider";
 import CanceledButton from "../../components/UI/CanceledButton/CanceledButton";
+import ErrorNotification from "../../components/UI/ErrorNotification/ErrorNotification";
 const ProductDetail: React.FC<{}> = () => {
     const { productId } = useParams();
     const [product, setProduct] = useState<Product>();
@@ -50,7 +49,7 @@ const ProductDetail: React.FC<{}> = () => {
             }
         };
         fetchProduct();
-    }, []);
+    }, [productId]);
     const onEditHandler = () => {
         navigate(
             `/admin/create-product?edit=true&productName=${
@@ -61,11 +60,13 @@ const ProductDetail: React.FC<{}> = () => {
         );
     };
     const onDeleteHandler = async () => {
+        const categoryId = product?.CategoryId;
+
         const response = await Product.delete(Number(product!.id), token);
         if (!response.ok) {
             setServerMessage(response.message);
         } else {
-            navigate(`/category/${product?.categoryId}`);
+            navigate(`/category/${categoryId}`);
         }
     };
     const onAddToCartHandler = async () => {
@@ -74,12 +75,13 @@ const ProductDetail: React.FC<{}> = () => {
             product!.description,
             product!.price,
             product!.imagesURL,
-            product!.categoryId,
+            product!.CategoryId,
             1
         );
         dispatch(cartActions.addToCart({ ...cartItem, id: product!.id! }));
         await cartItem.addToCart(product!.id!, token);
     };
+
     let rateStyles = "";
     const parsedRate = parseFloat(averageRate);
     if (parsedRate > 3 && parsedRate < 4) {
@@ -92,7 +94,9 @@ const ProductDetail: React.FC<{}> = () => {
     return (
         <div className={`center ${styles["product-detail"]}`}>
             {isLoading && <LoadingSpinner />}
-
+            {serverMessage && (
+                <ErrorNotification>{serverMessage}</ErrorNotification>
+            )}
             {!isLoading && (
                 <Overlay className={styles["product-detail__overlay"]}>
                     <>

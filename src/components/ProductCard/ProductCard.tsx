@@ -17,7 +17,7 @@ const ProductCard: React.FC<{ product: Product }> = (props) => {
             props.product.description,
             props.product.price,
             props.product.imagesURL,
-            props.product.categoryId,
+            props.product.CategoryId,
             1
         );
         dispatch(
@@ -33,6 +33,7 @@ const ProductCard: React.FC<{ product: Product }> = (props) => {
                         {props.product.name}
                     </div>
                     <img
+                        alt="product_img"
                         className={styles["product-card__img-preview"]}
                         src={`${process.env.REACT_APP_FTP_IMG_URL}/${props.product.imagesURL[0]}`}
                     ></img>

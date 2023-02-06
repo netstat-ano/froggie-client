@@ -17,7 +17,7 @@ const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
             props.product.description,
             props.product.price,
             props.product.imagesURL,
-            props.product.categoryId,
+            props.product.CategoryId,
             1
         );
         dispatch(
@@ -35,7 +35,7 @@ const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
             props.product.description,
             props.product.price,
             props.product.imagesURL,
-            props.product.categoryId,
+            props.product.CategoryId,
             1
         );
         dispatch(cartActions.addToCart({ ...cartItem, id: product!.id! }));
@@ -47,7 +47,7 @@ const CartItemCard: React.FC<{ product: CartItem }> = (props) => {
             props.product.description,
             props.product.price,
             props.product.imagesURL,
-            props.product.categoryId,
+            props.product.CategoryId,
             1
         );
         dispatch(

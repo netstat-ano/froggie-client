@@ -1,5 +1,3 @@
-import SortSettings from "../interfaces/SortSettings";
-import Error from "./Error";
 import ResponseApi from "./ResponseApi";
 
 class Product {
@@ -8,19 +6,19 @@ class Product {
     description: string;
     price: number;
     imagesURL: any;
-    categoryId: number;
+    CategoryId: number;
 
     constructor(
         name: string,
         description: string,
         price: number,
         imagesURL: any,
-        categoryId: number
+        CategoryId: number
     ) {
         this.name = name;
         this.description = description;
         this.imagesURL = imagesURL;
-        this.categoryId = categoryId;
+        this.CategoryId = CategoryId;
         this.price = price;
     }
     async save(token: string, signal?: AbortSignal) {
@@ -28,7 +26,7 @@ class Product {
         data.append("productName", this.name);
         data.append("description", this.description);
         data.append("price", String(this.price));
-        data.append("categoryId", String(this.categoryId));
+        data.append("categoryId", String(this.CategoryId));
         for (let i = 0; i < this.imagesURL.length; i++) {
             data.append("images", this.imagesURL[i]);
         }
@@ -111,7 +109,7 @@ class Product {
         data.append("productName", this.name);
         data.append("description", this.description);
         data.append("price", String(this.price));
-        data.append("CategoryId", String(this.categoryId));
+        data.append("CategoryId", String(this.CategoryId));
         for (let i = 0; i < this.imagesURL.length; i++) {
             data.append("images", this.imagesURL[i]);
         }

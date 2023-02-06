@@ -1,8 +1,7 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Order from "../../models/Order";
 import { useAppSelector } from "../../hooks/use-app-selector";
-import OrderItem from "../../models/OrderItem";
 import OrderCard from "../../components/OrderCard/OrderCard";
 import parseOrders from "../../utils/parseOrders";
 import ParsedOrders from "../../interfaces/ParsedOrders";
