@@ -1,3 +1,4 @@
+import SortSettings from "../interfaces/SortSettings";
 import Error from "./Error";
 import ResponseApi from "./ResponseApi";
 
@@ -66,7 +67,7 @@ class Product {
 
         return resJson as ResponseApi;
     }
-    static async getProductByCategory(id: string) {
+    static async getProductByCategory(id: string, sort?: string) {
         const response = await fetch(
             `${process.env.REACT_APP_API_URL}/product/fetch-product-by-category`,
             {
@@ -74,7 +75,7 @@ class Product {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ categoryId: id }),
+                body: JSON.stringify({ categoryId: id, sort }),
             }
         );
         if (response.ok) {

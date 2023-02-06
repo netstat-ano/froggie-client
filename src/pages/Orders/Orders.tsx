@@ -11,7 +11,7 @@ import useLoading from "../../hooks/use-loading";
 import LoadingSpinner from "../../components/UI/LoadingSpinner/LoadingSpinner";
 import Select from "../../components/UI/Select/Select";
 import styles from "./Orders.module.scss";
-import OrderSettings from "../../interfaces/OrderSettings";
+import OrderSettings from "../../interfaces/SortSettings";
 import NavButton from "../../components/UI/NavButton/NavButton";
 import openSocket from "socket.io-client";
 const Orders: React.FC<{}> = () => {

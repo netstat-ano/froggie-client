@@ -1,4 +1,4 @@
-import OrderSettings from "../interfaces/OrderSettings";
+import OrderSettings from "../interfaces/SortSettings";
 import CartItem from "./CartItem";
 import OrderItem from "./OrderItem";
 import ResponseApi from "./ResponseApi";
