@@ -20,7 +20,7 @@ const NotificationTab: React.FC<{
             const socket = openSocket(`${process.env.REACT_APP_API_URL}`);
             socket.on("notification", async (data) => {
                 if (
-                    data.action === "create" &&
+                    data.action === "change" &&
                     data.UserId === Number(UserId)
                 ) {
                     const fetchedNotifications =
