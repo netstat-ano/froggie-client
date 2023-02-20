@@ -72,6 +72,8 @@ const Orders: React.FC<{}> = () => {
             navigate("/unauthorized");
             return;
         }
+        console.log(fetchedOrders);
+
         if (fetchedOrders instanceof Array) {
             setOrders(parseOrders(fetchedOrders));
             setServerMessage("");
@@ -84,20 +86,6 @@ const Orders: React.FC<{}> = () => {
     };
     useEffect(() => {
         fetchOrders({});
-    }, [token, orderType]);
-    useEffect(() => {
-        const listenOrderChanges = () => {
-            const socket = openSocket(`${process.env.REACT_APP_API_URL}`);
-            socket.on("order", async (data) => {
-                if (
-                    data.UserId === Number(UserId) &&
-                    data.action === "change"
-                ) {
-                    fetchOrders({});
-                }
-            });
-        };
-        listenOrderChanges();
     }, [token, orderType]);
     const onSortHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
